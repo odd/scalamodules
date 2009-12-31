@@ -1,12 +1,23 @@
+# Build directory
+target
+
+# Mac stuff
 .DS_Store
-.classpath
-.launch
-.manager
+
+# Eclipse stuff
 .metadata
 .project
+.classpath
 .settings
-runner
-target
+.launch
+.manager
+
+# IntelliJ stuff
+.idea
 scalamodules*.iml
 scalamodules*.ipr
 scalamodules*.iws
+
+# Pax Runner stuff
+runner
+
