@@ -256,7 +256,7 @@ This global root project model defines the settings common to all ScalaModules p
           <artifactId>maven-license-plugin</artifactId>
           <version>1.4.0</version>
           <configuration>
-            <header>${basedir}/resources/header.txt</header>
+            <header>${basedir}/../../../resources/header.txt</header>
             <quiet>false</quiet>
             <failIfMissing>true</failIfMissing>
             <includes>
