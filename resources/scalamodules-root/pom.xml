@@ -113,6 +113,13 @@ This global root project model defines the settings common to all ScalaModules p
         <version>${scala.version}</version>
       </dependency>
       <!-- Provided -->
+      <!-- This is required for IntelliJ -->
+      <dependency>
+        <groupId>org.scala-lang</groupId>
+        <artifactId>scala-compiler</artifactId>
+        <version>${scala.version}</version>
+        <scope>provided</scope>
+      </dependency>
       <dependency>
         <groupId>org.osgi</groupId>
         <artifactId>org.osgi.core</artifactId>

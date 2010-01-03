@@ -9,6 +9,7 @@ package org.scalamodules.core
 
 import java.util.Dictionary
 import scala.collection.Map
+import scala.collection.JavaConversions._
 import scala.collection.immutable.{Map => IMap}
 
 object ConversionHelpers {
@@ -16,5 +17,21 @@ object ConversionHelpers {
   /**
    * Converts a Scala Map to a read-only Java Dictionary.
    */
-  implicit def scalaMapToJavaDictionary[K, V](map: Map[K, V]) = null
+  implicit def scalaMapToJavaDictionary[K, V](map: Map[K, V]): Dictionary[K, V] = {
+    if (map == null) null
+    else {
+      new Dictionary[K, V] {
+        override def size = map.size
+        override def isEmpty = map.isEmpty
+        override def keys = map.keys
+        override def elements = map.values
+        override def get(o: Object) = map.get(o.asInstanceOf[K]) match {
+          case None        => null.asInstanceOf[V]
+          case Some(value) => value.asInstanceOf[V]
+        }
+        override def put(key: K, value: V) = throw new UnsupportedOperationException("This Dictionary is read-only!")
+        override def remove(o: Object) = throw new UnsupportedOperationException("This Dictionary is read-only!")
+      }
+    }
+  }
 }

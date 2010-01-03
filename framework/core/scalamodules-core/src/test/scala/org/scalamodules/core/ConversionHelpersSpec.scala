@@ -21,14 +21,21 @@ class ConversionHelpersSpec extends WordSpec with ShouldMatchers {
   "The method scalaMapToJavaDictionary" should {
     val emptyScalaMap = IMap[Any, Any]()
 
-    "return null when called with null" in {
-      val result: Dictionary[_, _] = scalaMapToJavaDictionary(null)
-      result should be (null)
+    "return null when called with a null Scala Map" in {
+      val javaDictionary: Dictionary[Any, Any] = scalaMapToJavaDictionary(null)
+      javaDictionary should be (null)
     }
 
-    "not return null when called with null" in {
-      val result: Dictionary[_, _] = scalaMapToJavaDictionary(emptyScalaMap)
-      result should not be (null)
+    "return a not-null and valid Java Dictionary when called with a not-null Scala Map" in {
+      val javaDictionary: Dictionary[Any, Any] = scalaMapToJavaDictionary(emptyScalaMap)
+      javaDictionary should not be (null)
+      javaDictionary.size should be (0)
+      javaDictionary.isEmpty should be (true)
+      javaDictionary.keys.hasMoreElements should be (false)
+      javaDictionary.elements.hasMoreElements should be (false)
+      javaDictionary get "" should equal (null)
+      evaluating { javaDictionary.put("", "") } should produce [UnsupportedOperationException]
+      evaluating { javaDictionary remove "" } should produce [UnsupportedOperationException]
     }
   }
 }
