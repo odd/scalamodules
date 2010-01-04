@@ -14,9 +14,9 @@ target
 
 # IntelliJ stuff
 .idea
-scalamodules*.iml
-scalamodules*.ipr
-scalamodules*.iws
+*.iml
+*.ipr
+*.iws
 
 # Pax Runner stuff
 runner
