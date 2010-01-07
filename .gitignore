@@ -5,7 +5,7 @@ target
 .DS_Store
 
 # Eclipse stuff
-.metadata
+.scala_dependencies
 .project
 .classpath
 .settings

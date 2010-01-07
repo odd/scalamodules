@@ -11,7 +11,10 @@ import java.util.Dictionary
 import scala.collection.Map
 import scala.collection.JavaConversions.asEnumeration
 
-private[core] object ConversionHelpers {
+/**
+ * Helpers for converting betweet Java and Scala collection types beyond what is offered by the Scala library.
+ */
+object ConversionHelpers {
 
   /**
    * Converts a Scala Map to a read-only Java Dictionary backed by the given Scala Map.
