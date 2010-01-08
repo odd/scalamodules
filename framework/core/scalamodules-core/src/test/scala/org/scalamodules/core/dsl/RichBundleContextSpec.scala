@@ -16,21 +16,24 @@ import org.scalatest.mock.MockitoSugar
 @org.junit.runner.RunWith(classOf[JUnitRunner])
 class RichBundleContextSpec extends WordSpec with ShouldMatchers with MockitoSugar {
 
-  "A RichBundleContext" when {
+  "Creating a RichBundleContext" when {
 
-    "created with a null BundleContext" should {
+    "the given BundleContext is null" should {
       "throw an IllegalArgumentException" in {
         evaluating { RichBundleContext(null) } should produce [IllegalArgumentException]
       }
     }
+  }
 
-    "called on register with a null ServiceInfo" should {
+  "Calling RichBundleContext.register" when {
+
+    "the given ServiceInfo is null" should {
       "throw an IllegalArgumentException" in {
         evaluating { RichBundleContext(mock[BundleContext]) register null } should produce [IllegalArgumentException]
       }
     }
 
-    "called on register with a not-null ServiceInfo" should {
+    "the given ServiceInfo is not-null" should {
       "return a not-null ServiceRegistration" ignore {
         RichBundleContext(mock[BundleContext]) register ServiceInfo("TEST", None) should not be (null)
         RichBundleContext(mock[BundleContext]) register ServiceInfo("TEST", Some(classOf[String])) should not be (null)

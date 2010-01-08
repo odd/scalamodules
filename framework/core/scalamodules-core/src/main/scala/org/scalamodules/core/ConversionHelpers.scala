@@ -17,7 +17,7 @@ import scala.collection.JavaConversions.asEnumeration
 object ConversionHelpers {
 
   /**
-   * Converts a Scala Map to a read-only Java Dictionary backed by the given Scala Map.
+   * Implicitly converts a Scala Map to a read-only Java Dictionary backed by the given Scala Map.
    */
   implicit def scalaMapToJavaDictionary[K, V](map: Map[K, V]): Dictionary[K, V] = {
     if (map == null) null

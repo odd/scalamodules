@@ -7,9 +7,20 @@
  */
 package org.scalamodules.core
 
+import org.osgi.framework.{ BundleContext }
+
 /**
  * Some implicit conversions and other stuff essential for the ScalaModules DSL.
  */
 package object dsl {
 
+  /**
+   * Implicitly converts a BundleContext to a RichBundleContext backed by the given Scala Map.
+   */
+  implicit def toRichBundleContext(context: BundleContext) = new RichBundleContext(context)
+
+  /**
+   * Implicitly converts a service object to a ServiceInfo backed by the given service.
+   */
+  implicit def toServiceInfo[S <: AnyRef](service: S) = new ServiceInfo(service, None)
 }

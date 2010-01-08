@@ -7,13 +7,17 @@
  */
 package org.scalamodules.core.dsl
 
-private[dsl] case class ServiceInfo[I <: AnyRef, S <: I](val service: S,
-                                                         val interface: Option[Class[I]]) {
+private[scalamodules] case class ServiceInfo[I <: AnyRef, S <: I](val service: S,
+                                                                  val interface: Option[Class[I]] = None) {
 
   require(service != null, "The service must not be null!")
   require(interface != null, "The service interface must not be null!")
 
-  def interfaces: Array[String] = interface map { i => Array(i.getName) } getOrElse allInterfacesOrClass(service)
+  def interfaces: Array[String] =
+    interface map { i => Array(i.getName) } getOrElse allInterfacesOrClass(service)
+
+  def as[T >: S <: AnyRef](implicit manifest: Manifest[T]): ServiceInfo[T, S] =
+    new ServiceInfo(service, Some(manifest.erasure.asInstanceOf[Class[T]]))
 
   private def allInterfacesOrClass[S <: AnyRef](service: S) = {
     val interfaces = allInterfaces(service.getClass)
@@ -21,8 +25,8 @@ private[dsl] case class ServiceInfo[I <: AnyRef, S <: I](val service: S,
     else interfaces map { i => i.getName }
   }
 
-  def allInterfaces[S](clazz: Class[S]): Array[Class[_]] = {
+  private def allInterfaces[S](clazz: Class[S]): Array[Class[_]] = {
     val interfaces = clazz.getInterfaces filter { _ != classOf[ScalaObject] }
-    interfaces ++ ( interfaces flatMap { allInterfaces(_) } filter { i => !(interfaces contains i) })
+    interfaces ++ (interfaces flatMap { allInterfaces(_) } filter { i => !(interfaces contains i) })
   }
 }

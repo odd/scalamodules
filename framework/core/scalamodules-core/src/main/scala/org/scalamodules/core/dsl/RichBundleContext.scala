@@ -9,7 +9,7 @@ package org.scalamodules.core.dsl
 
 import org.osgi.framework.{ BundleContext, ServiceRegistration }
 
-private[dsl] case class RichBundleContext(context: BundleContext) {
+private[scalamodules] case class RichBundleContext(context: BundleContext) {
 
   require(context != null, "The BundleContext must not be null!")
 
