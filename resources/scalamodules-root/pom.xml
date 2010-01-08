@@ -103,6 +103,17 @@ This global root project model defines the settings common to all ScalaModules p
   ######################################################################################################################
   -->
 
+  <dependencies>
+    <!-- Runtime -->
+    <!-- An OSGi framework is required to use ScalaModules in the REPL (mvn scala:console) -->
+    <dependency>
+      <groupId>org.apache.felix</groupId>
+      <artifactId>org.apache.felix.framework</artifactId>
+      <version>2.0.2</version>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+
   <dependencyManagement>
     <dependencies>
 
@@ -113,7 +124,7 @@ This global root project model defines the settings common to all ScalaModules p
         <version>${scala.version}</version>
       </dependency>
       <!-- Provided -->
-      <!-- This is required for IntelliJ -->
+      <!-- The scala-compiler is required for IntelliJ -->
       <dependency>
         <groupId>org.scala-lang</groupId>
         <artifactId>scala-compiler</artifactId>
