@@ -7,17 +7,29 @@
  */
 package org.scalamodules.core.dsl
 
-private[scalamodules] case class ServiceInfo[I <: AnyRef, S <: I](val service: S,
-                                                                  val interface: Option[Class[I]] = None) {
+private[scalamodules] case class ServiceContext
+  [S <: AnyRef,
+   I1 >: S <: AnyRef,
+   I2 >: S <: AnyRef,
+   I3 >: S <: AnyRef]
+  (service: S,
+   interface1: Option[Class[I1]] = None,
+   interface2: Option[Class[I2]] = None,
+   interface3: Option[Class[I3]] = None) {
 
   require(service != null, "The service must not be null!")
-  require(interface != null, "The service interface must not be null!")
+  require(interface1 != null, "The first service interface must not be null!")
+  require(interface2 != null, "The second service interface must not be null!")
+  require(interface3 != null, "The third service interface must not be null!")
 
-  def interfaces: Array[String] =
-    interface map { i => Array(i.getName) } getOrElse allInterfacesOrClass(service)
+  def underInterface[T >: S <: AnyRef](interface: Class[T]) =
+    new ServiceContext(service, Some(interface))
 
-  def as[T >: S <: AnyRef](implicit manifest: Manifest[T]): ServiceInfo[T, S] =
-    new ServiceInfo(service, Some(manifest.erasure.asInstanceOf[Class[T]]))
+  private[scalamodules] def interfaces: Array[String] = {
+    val interfaces = Traversable(interface1, interface2, interface3) flatMap { i => i } map { _.getName }
+    if (!interfaces.isEmpty) interfaces.toArray
+    else allInterfacesOrClass(service)
+  }
 
   private def allInterfacesOrClass[S <: AnyRef](service: S) = {
     val interfaces = allInterfaces(service.getClass)

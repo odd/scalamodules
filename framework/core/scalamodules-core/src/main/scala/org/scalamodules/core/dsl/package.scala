@@ -20,7 +20,7 @@ package object dsl {
   implicit def toRichBundleContext(context: BundleContext) = new RichBundleContext(context)
 
   /**
-   * Implicitly converts a service object to a ServiceInfo backed by the given service.
+   * Implicitly converts a service object to a ServiceContext backed by the given service.
    */
-  implicit def toServiceInfo[S <: AnyRef](service: S) = new ServiceInfo(service, None)
+  implicit def anyRefToServiceContext[S <: AnyRef](service: S) = new ServiceContext(service, None)
 }

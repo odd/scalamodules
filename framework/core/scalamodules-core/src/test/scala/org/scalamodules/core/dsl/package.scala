@@ -23,10 +23,10 @@ class dslSpec extends WordSpec with ShouldMatchers with MockitoSugar {
     }
   }
 
-  "A service object" should {
-    "be converted to a ServiceInfo implicitly" in {
-      val service = "SERVICE"
-      val serviceInfo: ServiceInfo[String, String] = service
-    }
-  }
+//  "A service object" should {
+//    "be converted to a ServiceContext implicitly" in {
+//      val service = "SERVICE"
+//      val serviceContext: ServiceContext[String, String] = service
+//    }
+//  }
 }
