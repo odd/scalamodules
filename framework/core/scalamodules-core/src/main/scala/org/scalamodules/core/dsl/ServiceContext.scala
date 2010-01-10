@@ -21,20 +21,31 @@ private[scalamodules] case class ServiceContext[S <: AnyRef,
   require(interface2 != null, "The second service interface must not be null!")
   require(interface3 != null, "The third service interface must not be null!")
 
-  def under[T >: S <: AnyRef](interface: Option[Class[T]]) = {
-    require(interface != null, "The service interface must not be null!")
-    new ServiceContext(service, interface)
+  def under[T1 >: S <: AnyRef,
+            T2 >: S <: AnyRef]
+           (interfaces: (Option[Class[T1]], Option[Class[T2]])): ServiceContext[S, T1, T2, S] = {
+    require(interfaces != null, "The service interfaces must not be null!")
+    under(interfaces._1, interfaces._2)
   }
 
   def under[T1 >: S <: AnyRef,
             T2 >: S <: AnyRef,
             T3 >: S <: AnyRef]
-           (interfaces: (Option[Class[T1]], Option[Class[T2]], Option[Class[T3]])) = {
+           (interfaces: (Option[Class[T1]], Option[Class[T2]], Option[Class[T3]])): ServiceContext[S, T1, T2, T3] = {
     require(interfaces != null, "The service interfaces must not be null!")
-    require(interfaces._1 != null, "The first service interface must not be null!")
-    require(interfaces._2 != null, "The second service interface must not be null!")
-    require(interfaces._3 != null, "The third service interface must not be null!")
-    new ServiceContext(service, interfaces._1, interfaces._2, interfaces._3)
+    under(interfaces._1, interfaces._2, interfaces._3)
+  }
+
+  def under[T1 >: S <: AnyRef,
+            T2 >: S <: AnyRef,
+            T3 >: S <: AnyRef]
+           (interface1: Option[Class[T1]] = None,
+            interface2: Option[Class[T2]] = None,
+            interface3: Option[Class[T3]] = None): ServiceContext[S, T1, T2, T3] = {
+    require(interface1 != null, "The first service interface must not be null!")
+    require(interface2 != null, "The second service interface must not be null!")
+    require(interface3 != null, "The third service interface must not be null!")
+    new ServiceContext(service, interface1, interface2, interface3)
   }
 
   private[scalamodules] def interfaces: Array[String] = {

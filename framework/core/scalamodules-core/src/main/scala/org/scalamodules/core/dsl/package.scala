@@ -20,7 +20,23 @@ package object dsl {
   implicit def toRichBundleContext(context: BundleContext) = new RichBundleContext(context)
 
   /**
-   * Returns the given or inferred type in a Some.
+   * Returns the given or inferred type wrapped in a Some.
    */
   def interface[I](implicit manifest: Manifest[I]) = Some(manifest.erasure.asInstanceOf[Class[I]])
+
+  /**
+   * Returns the given or inferred types as a Tuple3 with the types wrapped into Options (the last one obviously None).
+   */
+  def interfaces[I1, I2](implicit manifest1: Manifest[I1], manifest2: Manifest[I2]) =
+    (Some(manifest1.erasure.asInstanceOf[Class[I1]]),
+     Some(manifest2.erasure.asInstanceOf[Class[I2]]),
+     None)
+
+  /**
+   * Returns the given or inferred types as a Tuple3 with the types wrapped into Options.
+   */
+  def interfaces[I1, I2, I3](implicit manifest1: Manifest[I1], manifest2: Manifest[I2], manifest3: Manifest[I3]) =
+    (Some(manifest1.erasure.asInstanceOf[Class[I1]]),
+     Some(manifest2.erasure.asInstanceOf[Class[I2]]),
+     Some(manifest3.erasure.asInstanceOf[Class[I3]]))
 }

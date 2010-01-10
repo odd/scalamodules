@@ -82,9 +82,29 @@ class ServiceContextSpec extends WordSpec with ShouldMatchers {
 
   "Calling ServiceContext.under" when {
 
-    "the given service interface is null" should {
+    // First we test the "normal" version
+
+    "the given first service interface is null" should {
       "throw an IllegalArgumentException" in {
-        evaluating { ServiceContext(new C1) under null.asInstanceOf[Option[Class[C1]]] } should produce [IllegalArgumentException]
+        evaluating {
+          ServiceContext(new C1) under (null, Some(classOf[C1]), Some(classOf[C1]))
+        } should produce [IllegalArgumentException]
+      }
+    }
+
+    "the given second service interface is null" should {
+      "throw an IllegalArgumentException" in {
+        evaluating {
+          ServiceContext(new C1) under (Some(classOf[C1]), null, Some(classOf[C1]))
+        } should produce [IllegalArgumentException]
+      }
+    }
+
+    "the given third service interface is null" should {
+      "throw an IllegalArgumentException" in {
+        evaluating {
+          ServiceContext(new C1) under (Some(classOf[C1]), Some(classOf[C1]), null)
+        } should produce [IllegalArgumentException]
       }
     }
 
@@ -94,37 +114,32 @@ class ServiceContextSpec extends WordSpec with ShouldMatchers {
         (ServiceContext(new C1 with T1) under Some(classOf[C1])).interface1 should be (Some(classOf[C1]))
       }
     }
-  }
-
-  "Calling ServiceContext.under" when {
-
-    "the given service interfaces is null" should {
-      "throw an IllegalArgumentException" in {
-        evaluating { ServiceContext(new C1) under null.asInstanceOf[(Option[Class[C1]], Option[Class[C1]], Option[Class[C1]])] } should produce [IllegalArgumentException]
-      }
-    }
-    "the given first service interface is null" should {
-      "throw an IllegalArgumentException" in {
-        evaluating { ServiceContext(new C1) under (null, Some(classOf[C1]), Some(classOf[C1])) } should produce [IllegalArgumentException]
-      }
-    }
-    "the given second service interface is null" should {
-      "throw an IllegalArgumentException" in {
-        evaluating { ServiceContext(new C1) under (Some(classOf[C1]), null, Some(classOf[C1])) } should produce [IllegalArgumentException]
-      }
-    }
-    "the given third service interface is null" should {
-      "throw an IllegalArgumentException" in {
-        evaluating { ServiceContext(new C1) under (Some(classOf[C1]), Some(classOf[C1]), null) } should produce [IllegalArgumentException]
-      }
-    }
 
     "the given type for the service interfaces is valid" should {
       "return a new ServiceContext with according service interfaces" in {
-        val serviceContext = (ServiceContext(new C1 with T1 with T2) under (Some(classOf[C1]), Some(classOf[T1]), Some(classOf[T2])))
+        val serviceContext =
+          (ServiceContext(new C1 with T1 with T2) under (Some(classOf[C1]), Some(classOf[T1]), Some(classOf[T2])))
         serviceContext.interface1 should be (Some(classOf[C1]))
         serviceContext.interface2 should be (Some(classOf[T1]))
         serviceContext.interface3 should be (Some(classOf[T2]))
+      }
+    }
+
+    // And now the tuple versions: We only need to test for not-null, because they delegate to the "normal" version
+
+    "the given service interfaces Tuple2 is null" should {
+      "throw an IllegalArgumentException" in {
+        evaluating {
+          ServiceContext(new C1) under null.asInstanceOf[(Option[Class[C1]], Option[Class[C1]])]
+        } should produce [IllegalArgumentException]
+      }
+    }
+
+    "the given service interfaces Tuple3 is null" should {
+      "throw an IllegalArgumentException" in {
+        evaluating {
+          ServiceContext(new C1) under null.asInstanceOf[(Option[Class[C1]], Option[Class[C1]], Option[Class[C1]])]
+        } should produce [IllegalArgumentException]
       }
     }
   }
