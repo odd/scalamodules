@@ -7,14 +7,14 @@
  */
 package org.scalamodules.core.dsl
 
-import org.osgi.framework.{ BundleContext, ServiceRegistration }
+import org.osgi.framework.{ BundleContext }
 
 private[scalamodules] case class RichBundleContext(context: BundleContext) {
 
   require(context != null, "The BundleContext must not be null!")
 
-//  def register[I <: AnyRef, S <: I](serviceContext: ServiceContext[I, S]): ServiceRegistration = {
-//    require(serviceContext != null, "The ServiceContext must not be null!")
-//    context.registerService(serviceContext.interfaces, serviceContext.service, null)
-//  }
+  def createService[S <: AnyRef](s: S) = {
+    require(s != null, "The service object must not be null!")
+    ServiceContext(s)
+  }
 }

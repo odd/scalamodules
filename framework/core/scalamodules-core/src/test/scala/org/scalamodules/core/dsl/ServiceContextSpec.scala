@@ -63,13 +63,13 @@ class ServiceContextSpec extends WordSpec with ShouldMatchers {
       }
     }
 
-    "ServiceContext.interface is None and ServiceContext.service is a C1 implementing nothing" should {
+    "ServiceContext.interfaceX is None and ServiceContext.service is a C1 implementing nothing" should {
       "return Array(C1)" in {
         ServiceContext(new C1, None).interfaces should equal (Array(classOf[C1].getName))
       }
     }
 
-    "ServiceContext.interface is None and ServiceContext.service is a C1 implementing T1" should {
+    "ServiceContext.interfaceX is None and ServiceContext.service is a C1 implementing T1" should {
       "return Array(T1)" in {
         ServiceContext(new C1 with T1, None).interfaces should equal (Array(classOf[T1].getName))
         val interfaces = ServiceContext(new C1 with T1 with A, None).interfaces
@@ -80,12 +80,51 @@ class ServiceContextSpec extends WordSpec with ShouldMatchers {
     }
   }
 
-  "Calling ServiceContext.underInterface" when {
+  "Calling ServiceContext.under" when {
+
+    "the given service interface is null" should {
+      "throw an IllegalArgumentException" in {
+        evaluating { ServiceContext(new C1) under null.asInstanceOf[Option[Class[C1]]] } should produce [IllegalArgumentException]
+      }
+    }
 
     "the given type for the service interface is valid" should {
       "return a new ServiceContext with an according service interface" in {
-        (ServiceContext(new C1 with T1, None) underInterface classOf[T1]).interface1 should be (Some(classOf[T1]))
-        (ServiceContext(new C1 with T1, None) underInterface classOf[C1]).interface1 should be (Some(classOf[C1]))
+        (ServiceContext(new C1 with T1) under Some(classOf[T1])).interface1 should be (Some(classOf[T1]))
+        (ServiceContext(new C1 with T1) under Some(classOf[C1])).interface1 should be (Some(classOf[C1]))
+      }
+    }
+  }
+
+  "Calling ServiceContext.under" when {
+
+    "the given service interfaces is null" should {
+      "throw an IllegalArgumentException" in {
+        evaluating { ServiceContext(new C1) under null.asInstanceOf[(Option[Class[C1]], Option[Class[C1]], Option[Class[C1]])] } should produce [IllegalArgumentException]
+      }
+    }
+    "the given first service interface is null" should {
+      "throw an IllegalArgumentException" in {
+        evaluating { ServiceContext(new C1) under (null, Some(classOf[C1]), Some(classOf[C1])) } should produce [IllegalArgumentException]
+      }
+    }
+    "the given second service interface is null" should {
+      "throw an IllegalArgumentException" in {
+        evaluating { ServiceContext(new C1) under (Some(classOf[C1]), null, Some(classOf[C1])) } should produce [IllegalArgumentException]
+      }
+    }
+    "the given third service interface is null" should {
+      "throw an IllegalArgumentException" in {
+        evaluating { ServiceContext(new C1) under (Some(classOf[C1]), Some(classOf[C1]), null) } should produce [IllegalArgumentException]
+      }
+    }
+
+    "the given type for the service interfaces is valid" should {
+      "return a new ServiceContext with according service interfaces" in {
+        val serviceContext = (ServiceContext(new C1 with T1 with T2) under (Some(classOf[C1]), Some(classOf[T1]), Some(classOf[T2])))
+        serviceContext.interface1 should be (Some(classOf[C1]))
+        serviceContext.interface2 should be (Some(classOf[T1]))
+        serviceContext.interface3 should be (Some(classOf[T2]))
       }
     }
   }

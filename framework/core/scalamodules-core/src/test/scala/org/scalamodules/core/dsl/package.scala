@@ -23,10 +23,9 @@ class dslSpec extends WordSpec with ShouldMatchers with MockitoSugar {
     }
   }
 
-//  "A service object" should {
-//    "be converted to a ServiceContext implicitly" in {
-//      val service = "SERVICE"
-//      val serviceContext: ServiceContext[String, String] = service
-//    }
-//  }
+  "Calling interface with the type given explicitly" should {
+    "return the correct type" in {
+      interface[String] should be (Some(classOf[String]))
+    }
+  }
 }

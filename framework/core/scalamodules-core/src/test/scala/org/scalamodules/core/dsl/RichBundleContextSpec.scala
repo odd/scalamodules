@@ -25,19 +25,18 @@ class RichBundleContextSpec extends WordSpec with ShouldMatchers with MockitoSug
     }
   }
 
-//  "Calling RichBundleContext.register" when {
-//
-//    "the given ServiceContext is null" should {
-//      "throw an IllegalArgumentException" in {
-//        evaluating { RichBundleContext(mock[BundleContext]) register null } should produce [IllegalArgumentException]
-//      }
-//    }
-//
-//    "the given ServiceContext is not-null" should {
-//      "return a not-null ServiceRegistration" ignore {
-//        RichBundleContext(mock[BundleContext]) register ServiceContext("TEST", None) should not be (null)
-//        RichBundleContext(mock[BundleContext]) register ServiceContext("TEST", Some(classOf[String])) should not be (null)
-//      }
-//    }
-//  }
+  "Calling RichBundleContext.createService" when {
+
+    "the given service object is null" should {
+      "throw an IllegalArgumentException" in {
+        evaluating { RichBundleContext(mock[BundleContext]) createService null } should produce [IllegalArgumentException]
+      }
+    }
+
+    "the given service object is not-null" should {
+      "return a not-null ServiceContext" ignore {
+        RichBundleContext(mock[BundleContext]) createService "TEST" should not be (null)
+      }
+    }
+  }
 }

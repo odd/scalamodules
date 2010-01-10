@@ -7,23 +7,35 @@
  */
 package org.scalamodules.core.dsl
 
-private[scalamodules] case class ServiceContext
-  [S <: AnyRef,
-   I1 >: S <: AnyRef,
-   I2 >: S <: AnyRef,
-   I3 >: S <: AnyRef]
-  (service: S,
-   interface1: Option[Class[I1]] = None,
-   interface2: Option[Class[I2]] = None,
-   interface3: Option[Class[I3]] = None) {
+private[scalamodules] case class ServiceContext[S <: AnyRef,
+                                                I1 >: S <: AnyRef,
+                                                I2 >: S <: AnyRef,
+                                                I3 >: S <: AnyRef]
+                                               (service: S,
+                                                interface1: Option[Class[I1]] = None,
+                                                interface2: Option[Class[I2]] = None,
+                                                interface3: Option[Class[I3]] = None) {
 
-  require(service != null, "The service must not be null!")
+  require(service != null, "The service object must not be null!")
   require(interface1 != null, "The first service interface must not be null!")
   require(interface2 != null, "The second service interface must not be null!")
   require(interface3 != null, "The third service interface must not be null!")
 
-  def underInterface[T >: S <: AnyRef](interface: Class[T]) =
-    new ServiceContext(service, Some(interface))
+  def under[T >: S <: AnyRef](interface: Option[Class[T]]) = {
+    require(interface != null, "The service interface must not be null!")
+    new ServiceContext(service, interface)
+  }
+
+  def under[T1 >: S <: AnyRef,
+            T2 >: S <: AnyRef,
+            T3 >: S <: AnyRef]
+           (interfaces: (Option[Class[T1]], Option[Class[T2]], Option[Class[T3]])) = {
+    require(interfaces != null, "The service interfaces must not be null!")
+    require(interfaces._1 != null, "The first service interface must not be null!")
+    require(interfaces._2 != null, "The second service interface must not be null!")
+    require(interfaces._3 != null, "The third service interface must not be null!")
+    new ServiceContext(service, interfaces._1, interfaces._2, interfaces._3)
+  }
 
   private[scalamodules] def interfaces: Array[String] = {
     val interfaces = Traversable(interface1, interface2, interface3) flatMap { i => i } map { _.getName }

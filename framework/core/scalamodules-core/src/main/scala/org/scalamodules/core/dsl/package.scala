@@ -20,7 +20,7 @@ package object dsl {
   implicit def toRichBundleContext(context: BundleContext) = new RichBundleContext(context)
 
   /**
-   * Implicitly converts a service object to a ServiceContext backed by the given service.
+   * Returns the given or inferred type in a Some.
    */
-  implicit def anyRefToServiceContext[S <: AnyRef](service: S) = new ServiceContext(service, None)
+  def interface[I](implicit manifest: Manifest[I]) = Some(manifest.erasure.asInstanceOf[Class[I]])
 }
