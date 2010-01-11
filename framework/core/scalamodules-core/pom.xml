@@ -10,7 +10,7 @@
 
 <!--
 ########################################################################################################################
-Aggregator project model for the ScalaModules Core.
+ScalaModules Core.
 ########################################################################################################################
 -->
 
@@ -54,10 +54,6 @@ Aggregator project model for the ScalaModules Core.
       <artifactId>scala-library</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-compiler</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.osgi</groupId>
       <artifactId>org.osgi.core</artifactId>
     </dependency>
@@ -83,6 +79,9 @@ Aggregator project model for the ScalaModules Core.
 
   <build>
     <plugins>
+      <plugin>
+        <artifactId>maven-source-plugin</artifactId>
+      </plugin>
       <plugin>
         <groupId>com.google.code.maven-license-plugin</groupId>
         <artifactId>maven-license-plugin</artifactId>

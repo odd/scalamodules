@@ -104,6 +104,16 @@ This global root project model defines the settings common to all ScalaModules p
   -->
 
   <dependencies>
+
+    <!-- Provided -->
+    <!-- The scala-compiler is required for IntelliJ -->
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-compiler</artifactId>
+      <version>${scala.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
     <!-- Runtime -->
     <!-- An OSGi framework is required to use ScalaModules in the REPL (mvn scala:console) -->
     <dependency>
@@ -124,13 +134,6 @@ This global root project model defines the settings common to all ScalaModules p
         <version>${scala.version}</version>
       </dependency>
       <!-- Provided -->
-      <!-- The scala-compiler is required for IntelliJ -->
-      <dependency>
-        <groupId>org.scala-lang</groupId>
-        <artifactId>scala-compiler</artifactId>
-        <version>${scala.version}</version>
-        <scope>provided</scope>
-      </dependency>
       <dependency>
         <groupId>org.osgi</groupId>
         <artifactId>org.osgi.core</artifactId>

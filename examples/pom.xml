@@ -10,7 +10,7 @@
 
 <!--
 ########################################################################################################################
-Aggregator project model for ScalaModules.
+Aggregator project model for the ScalaModules Examples.
 ########################################################################################################################
 -->
 
@@ -30,9 +30,9 @@ Aggregator project model for ScalaModules.
     <groupId>org.scalamodules</groupId>
     <artifactId>scalamodules-root</artifactId>
     <version>2.0-SNAPSHOT</version>
-    <relativePath>resources/scalamodules-root/pom.xml</relativePath>
+    <relativePath>../resources/scalamodules-root/pom.xml</relativePath>
   </parent>
-  <artifactId>scalamodules</artifactId>
+  <artifactId>examples</artifactId>
   <packaging>pom</packaging>
 
   <!--
@@ -41,7 +41,7 @@ Aggregator project model for ScalaModules.
   ######################################################################################################################
   -->
 
-  <name>ScalaModules - Aggregator</name>
+  <name>ScalaModules - Examples Aggregator</name>
 
   <!--
   ######################################################################################################################
@@ -50,8 +50,8 @@ Aggregator project model for ScalaModules.
   -->
 
   <modules>
-    <module>framework</module>
-    <module>examples</module>
+    <module>scalamodules-examples-api</module>
+    <module>scalamodules-examples-register</module>
   </modules>
 
 </project>
