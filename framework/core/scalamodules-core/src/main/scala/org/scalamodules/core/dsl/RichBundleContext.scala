@@ -9,12 +9,12 @@ package org.scalamodules.core.dsl
 
 import org.osgi.framework.{ BundleContext }
 
-private[scalamodules] case class RichBundleContext(context: BundleContext) {
+private[scalamodules] case class RichBundleContext(bundleContext: BundleContext) {
 
-  require(context != null, "The BundleContext must not be null!")
+  require(bundleContext != null, "The BundleContext must not be null!")
 
-  def createService[S <: AnyRef](s: S): ServiceContext[S, S, S, S] = {
-    require(s != null, "The service object must not be null!")
-    ServiceContext(s)
+  def createService[S <: AnyRef](service: S): ServiceContext[S, S, S, S] = {
+    require(service != null, "The service object must not be null!")
+    ServiceContext(service)(bundleContext)
   }
 }

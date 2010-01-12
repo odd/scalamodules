@@ -17,7 +17,7 @@ package object dsl {
   /**
    * Implicitly converts a BundleContext to a RichBundleContext backed by the given Scala Map.
    */
-  implicit def toRichBundleContext(context: BundleContext) = new RichBundleContext(context)
+  implicit def toRichBundleContext(bundleContext: BundleContext) = RichBundleContext(bundleContext)
 
   /**
    * Returns the given or inferred type wrapped in a Some.

@@ -7,6 +7,8 @@
  */
 package org.scalamodules.core.dsl
 
+import org.osgi.framework.{ BundleContext, ServiceRegistration }
+
 private[scalamodules] case class ServiceContext[S <: AnyRef,
                                                 I1 >: S <: AnyRef,
                                                 I2 >: S <: AnyRef,
@@ -14,12 +16,14 @@ private[scalamodules] case class ServiceContext[S <: AnyRef,
                                                (service: S,
                                                 interface1: Option[Class[I1]] = None,
                                                 interface2: Option[Class[I2]] = None,
-                                                interface3: Option[Class[I3]] = None) {
+                                                interface3: Option[Class[I3]] = None)
+                                               (bundleContext: BundleContext) {
 
   require(service != null, "The service object must not be null!")
   require(interface1 != null, "The first service interface must not be null!")
   require(interface2 != null, "The second service interface must not be null!")
   require(interface3 != null, "The third service interface must not be null!")
+  require(bundleContext != null, "The BundleContext must not be null!")
 
   def under[T1 >: S <: AnyRef,
             T2 >: S <: AnyRef]
@@ -45,8 +49,10 @@ private[scalamodules] case class ServiceContext[S <: AnyRef,
     require(interface1 != null, "The first service interface must not be null!")
     require(interface2 != null, "The second service interface must not be null!")
     require(interface3 != null, "The third service interface must not be null!")
-    new ServiceContext(service, interface1, interface2, interface3)
+    ServiceContext(service, interface1, interface2, interface3)(bundleContext)
   }
+
+  def andRegister: ServiceRegistration = bundleContext.registerService(interfaces, service, null)
 
   private[scalamodules] def interfaces: Array[String] = {
     val interfaces = Traversable(interface1, interface2, interface3) flatMap { i => i } map { _.getName }

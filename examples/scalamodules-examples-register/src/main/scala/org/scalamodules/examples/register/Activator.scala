@@ -18,7 +18,7 @@ class Activator extends BundleActivator {
       override def welcome = "Hello!"
       override def goodbye = "Bye!"
     }
-    context createService hello
+    context createService hello under interface[Greeting]
   }
 
   override def stop(context: BundleContext) {}
