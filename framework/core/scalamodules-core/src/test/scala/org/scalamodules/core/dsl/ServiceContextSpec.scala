@@ -5,14 +5,20 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package org.scalamodules.core.dsl
+package org.scalamodules.core
+package dsl
 
+import ConversionHelpers._
+import java.util.Dictionary
+import org.mockito.ArgumentCaptor
+import org.mockito.Matchers
 import org.mockito.Mockito._
 import org.osgi.framework.BundleContext
 import org.scalatest.WordSpec
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.mock.MockitoSugar
+import scala.collection.immutable.Map
 
 @org.junit.runner.RunWith(classOf[JUnitRunner])
 class ServiceContextSpec extends WordSpec with ShouldMatchers with MockitoSugar {
@@ -40,6 +46,12 @@ class ServiceContextSpec extends WordSpec with ShouldMatchers with MockitoSugar 
     "the given third service interface is null" should {
       "throw an IllegalArgumentException" in {
         evaluating { ServiceContext(new C1, interface3 = null)(mock[BundleContext]) } should produce [IllegalArgumentException]
+      }
+    }
+
+    "the given service properties are null" should {
+      "throw an IllegalArgumentException" in {
+        evaluating { ServiceContext(new C1, properties = null)(mock[BundleContext]) } should produce [IllegalArgumentException]
       }
     }
 
@@ -128,6 +140,7 @@ class ServiceContextSpec extends WordSpec with ShouldMatchers with MockitoSugar 
       "return a new ServiceContext with according service interfaces" in {
         val serviceContext =
           ServiceContext(new C1 with T1 with T2)(mock[BundleContext]) under (Some(classOf[C1]), Some(classOf[T1]), Some(classOf[T2]))
+        serviceContext should not be (null)
         serviceContext.interface1 should be (Some(classOf[C1]))
         serviceContext.interface2 should be (Some(classOf[T1]))
         serviceContext.interface3 should be (Some(classOf[T2]))
@@ -159,8 +172,40 @@ class ServiceContextSpec extends WordSpec with ShouldMatchers with MockitoSugar 
       "call BundleContext.registerService correctly" in {
         val bundleContext = mock[BundleContext]
         val service = new C1
-        val serviceRegistration = ServiceContext(service)(bundleContext).andRegister
+        ServiceContext(service)(bundleContext).andRegister
         verify(bundleContext).registerService(Array(classOf[C1].getName), service, null)
+      }
+    }
+
+    "there are custom service properties" should {
+      "call BundleContext.registerService correctly" in {
+        val bundleContext = mock[BundleContext]
+        val service = new C1
+        val properties = Map("scala" -> "modules")
+        val capturedProperties = ArgumentCaptor.forClass(classOf[Dictionary[String, String]])
+        ServiceContext(service)(bundleContext).withProperties(properties).andRegister
+        verify(bundleContext).registerService(Matchers.eq(Array(classOf[C1].getName)), Matchers.eq(service), capturedProperties.capture)
+        capturedProperties.getValue should have size (1)
+        capturedProperties.getValue.get("scala") should be ("modules")
+      }
+    }
+  }
+
+  "Calling ServiceContext.withProperties" when {
+
+    "the given service properties are null" should {
+      "throw an IllegalArgumentException" in {
+        evaluating {
+          ServiceContext(new C1)(mock[BundleContext]) withProperties null.asInstanceOf[Map[String, Any]]
+        } should produce [IllegalArgumentException]
+      }
+    }
+
+    "the given service properties are not null and not empty" should {
+      "return a new ServiceContext with according service properties" in {
+        val serviceContext = ServiceContext(new C1)(mock[BundleContext]) withProperties (Map("x" -> 1))
+        serviceContext should not be (null)
+        serviceContext.properties should be (Some(Map("x" -> 1)))
       }
     }
   }

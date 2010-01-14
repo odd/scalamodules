@@ -84,6 +84,16 @@ ScalaModules Examples - Register
           </configuration>
       </plugin>
       <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <configuration>
+          <instructions>
+            <Private-Package>org.scalamodules.examples.register</Private-Package>
+            <Bundle-Activator>org.scalamodules.examples.register.Activator</Bundle-Activator>
+          </instructions>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.scala-tools</groupId>
         <artifactId>maven-scala-plugin</artifactId>
       </plugin>

@@ -28,4 +28,17 @@ class dslSpec extends WordSpec with ShouldMatchers with MockitoSugar {
       interface[String] should be (Some(classOf[String]))
     }
   }
+
+  "Calling towInterfaces with the two types given explicitly" should {
+    "return the correct type" in {
+      interfaces[String, String] //should be (Some(classOf[String]), Some(classOf[String]))
+    }
+  }
+
+// TODO Enable as soon as Scala supports overloading in package objects (hopefully in 2.8)!
+//  "Calling threeInterfaces with the three type given explicitly" should {
+//    "return the correct type" in {
+//      interfaces[String, String, Int] //should be (Some(classOf[String]), Some(classOf[String]), Some(classOf[Int]))
+//    }
+//  }
 }

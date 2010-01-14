@@ -8,17 +8,30 @@
 package org.scalamodules.examples
 package register
 
+import java.io.Serializable
 import org.osgi.framework.{ BundleActivator, BundleContext }
 import org.scalamodules.core.dsl._
 
 class Activator extends BundleActivator {
 
   override def start(context: BundleContext) {
-    val hello = new Greeting {
+    val greeting = new Greeting {
       override def welcome = "Hello!"
       override def goodbye = "Bye!"
     }
-    context createService hello under interface[Greeting]
+    context createService greeting andRegister
+
+    val coolGreeting = new Greeting {
+      override def welcome = "Hey!"
+      override def goodbye = "See you!"
+    }
+    context createService coolGreeting under interface[Greeting] withProperties ("style" -> "cool") andRegister
+
+    val politeGreeting = new Greeting with Serializable {
+      override def welcome = "Welcome!"
+      override def goodbye = "Good-bye!"
+    }
+    context createService politeGreeting under interfaces[Greeting, Serializable] withProperties ("style" -> "polite") andRegister
   }
 
   override def stop(context: BundleContext) {}
