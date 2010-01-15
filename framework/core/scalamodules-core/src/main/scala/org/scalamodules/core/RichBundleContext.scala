@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package org.scalamodules.core.dsl
+package org.scalamodules.core
 
 import org.osgi.framework.{ BundleContext }
 
@@ -13,8 +13,8 @@ private[scalamodules] case class RichBundleContext(bundleContext: BundleContext)
 
   require(bundleContext != null, "The BundleContext must not be null!")
 
-  def createService[S <: AnyRef](service: S): ServiceContext[S, S, S, S] = {
+  def createService[S <: AnyRef](service: S): Service[S, S, S, S] = {
     require(service != null, "The service object must not be null!")
-    ServiceContext(service)(bundleContext)
+    Service(service)(bundleContext)
   }
 }

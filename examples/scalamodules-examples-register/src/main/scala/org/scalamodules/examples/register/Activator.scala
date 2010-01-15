@@ -10,7 +10,7 @@ package register
 
 import java.io.Serializable
 import org.osgi.framework.{ BundleActivator, BundleContext }
-import org.scalamodules.core.dsl._
+import org.scalamodules.core._
 
 class Activator extends BundleActivator {
 

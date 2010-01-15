@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package org.scalamodules.core.dsl
+package org.scalamodules.core
 
 import org.osgi.framework.BundleContext
 import org.scalatest.WordSpec
@@ -34,7 +34,7 @@ class RichBundleContextSpec extends WordSpec with ShouldMatchers with MockitoSug
     }
 
     "the given service object is not-null" should {
-      "return a not-null ServiceContext" ignore {
+      "return a not-null Service" ignore {
         RichBundleContext(mock[BundleContext]) createService "TEST" should not be (null)
       }
     }

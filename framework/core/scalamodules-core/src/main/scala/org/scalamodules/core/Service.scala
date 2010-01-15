@@ -6,25 +6,23 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 package org.scalamodules.core
-package dsl
 
-import ConversionHelpers._
 import org.osgi.framework.{ BundleContext, ServiceRegistration }
 import scala.collection.Map
 import scala.collection.immutable.{ Map => IMap }
 
-private[scalamodules] case class ServiceContext[S <: AnyRef,
-                                                I1 >: S <: AnyRef,
-                                                I2 >: S <: AnyRef,
-                                                I3 >: S <: AnyRef]
-                                               (service: S,
-                                                interface1: Option[Class[I1]] = None,
-                                                interface2: Option[Class[I2]] = None,
-                                                interface3: Option[Class[I3]] = None,
-                                                properties: Option[Map[String, Any]] = None)
-                                               (bundleContext: BundleContext) {
+private[scalamodules] case class Service[S <: AnyRef,
+                                         I1 >: S <: AnyRef,
+                                         I2 >: S <: AnyRef,
+                                         I3 >: S <: AnyRef]
+                                        (serviceObject: S,
+                                         interface1: Option[Class[I1]] = None,
+                                         interface2: Option[Class[I2]] = None,
+                                         interface3: Option[Class[I3]] = None,
+                                         properties: Option[Map[String, Any]] = None)
+                                        (bundleContext: BundleContext) {
 
-  require(service != null, "The service object must not be null!")
+  require(serviceObject != null, "The service object must not be null!")
   require(interface1 != null, "The first service interface must not be null!")
   require(interface2 != null, "The second service interface must not be null!")
   require(interface3 != null, "The third service interface must not be null!")
@@ -33,7 +31,7 @@ private[scalamodules] case class ServiceContext[S <: AnyRef,
 
   def under[T1 >: S <: AnyRef,
             T2 >: S <: AnyRef]
-           (interfaces: (Option[Class[T1]], Option[Class[T2]])): ServiceContext[S, T1, T2, S] = {
+           (interfaces: (Option[Class[T1]], Option[Class[T2]])): Service[S, T1, T2, S] = {
     require(interfaces != null, "The service interfaces must not be null!")
     under(interfaces._1, interfaces._2)
   }
@@ -41,7 +39,7 @@ private[scalamodules] case class ServiceContext[S <: AnyRef,
   def under[T1 >: S <: AnyRef,
             T2 >: S <: AnyRef,
             T3 >: S <: AnyRef]
-           (interfaces: (Option[Class[T1]], Option[Class[T2]], Option[Class[T3]])): ServiceContext[S, T1, T2, T3] = {
+           (interfaces: (Option[Class[T1]], Option[Class[T2]], Option[Class[T3]])): Service[S, T1, T2, T3] = {
     require(interfaces != null, "The service interfaces must not be null!")
     under(interfaces._1, interfaces._2, interfaces._3)
   }
@@ -51,35 +49,35 @@ private[scalamodules] case class ServiceContext[S <: AnyRef,
             T3 >: S <: AnyRef]
            (interface1: Option[Class[T1]] = None,
             interface2: Option[Class[T2]] = None,
-            interface3: Option[Class[T3]] = None): ServiceContext[S, T1, T2, T3] = {
+            interface3: Option[Class[T3]] = None): Service[S, T1, T2, T3] = {
     require(interface1 != null, "The first service interface must not be null!")
     require(interface2 != null, "The second service interface must not be null!")
     require(interface3 != null, "The third service interface must not be null!")
     require(properties != null, "The service properties must not be null!")
-    ServiceContext(service, interface1, interface2, interface3, properties)(bundleContext)
+    Service(serviceObject, interface1, interface2, interface3, properties)(bundleContext)
   }
 
-  def withProperties(properties: (String, Any)*): ServiceContext[S, I1, I2, I3] = withProperties(IMap(properties: _*))
+  def withProperties(properties: (String, Any)*): Service[S, I1, I2, I3] = withProperties(IMap(properties: _*))
 
-  def withProperties(properties: Map[String, Any]): ServiceContext[S, I1, I2, I3] = {
+  def withProperties(properties: Map[String, Any]): Service[S, I1, I2, I3] = {
     require(properties != null, "The service properties must not be null!")
-    ServiceContext(service, interface1, interface2, interface3, Some(properties))(bundleContext)
+    Service(serviceObject, interface1, interface2, interface3, Some(properties))(bundleContext)
   }
 
   def andRegister: ServiceRegistration = properties match {
-    case None => bundleContext.registerService(interfaces, service, null)
-    case Some(p) => bundleContext.registerService(interfaces, service, p)
+    case None => bundleContext.registerService(interfaces, serviceObject, null)
+    case Some(p) => bundleContext.registerService(interfaces, serviceObject, p)
   }
 
   private[scalamodules] def interfaces: Array[String] = {
     val interfaces = Traversable(interface1, interface2, interface3) flatMap { i => i } map { _.getName }
     if (!interfaces.isEmpty) interfaces.toArray
-    else allInterfacesOrClass(service)
+    else allInterfacesOrClass
   }
 
-  private def allInterfacesOrClass[S <: AnyRef](service: S) = {
-    val interfaces = allInterfaces(service.getClass)
-    if (interfaces.isEmpty) Array(service.getClass.getName)
+  private def allInterfacesOrClass = {
+    val interfaces = allInterfaces(serviceObject.getClass)
+    if (interfaces.isEmpty) Array(serviceObject.getClass.getName)
     else interfaces map { i => i.getName }
   }
 

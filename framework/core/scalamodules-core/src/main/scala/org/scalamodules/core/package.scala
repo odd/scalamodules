@@ -5,14 +5,17 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package org.scalamodules.core
+package org.scalamodules
 
+import java.util.Dictionary
 import org.osgi.framework.{ BundleContext }
+import scala.collection.Map
+import scala.collection.JavaConversions.asEnumeration
 
 /**
  * Some implicit conversions and other stuff essential for the ScalaModules DSL.
  */
-package object dsl {
+package object core {
 
   /**
    * Implicitly converts a BundleContext to a RichBundleContext backed by the given Scala Map.
@@ -39,4 +42,23 @@ package object dsl {
 //    (Some(manifest1.erasure.asInstanceOf[Class[I1]]),
 //     Some(manifest2.erasure.asInstanceOf[Class[I2]]),
 //     Some(manifest3.erasure.asInstanceOf[Class[I3]]))
+
+  /**
+   * Implicitly converts a Scala Map to a read-only Java Dictionary backed by the given Scala Map.
+   */
+  private[scalamodules] implicit def scalaMapToJavaDictionary[K, V](map: Map[K, V]): Dictionary[K, V] = {
+    if (map == null) null
+    else new Dictionary[K, V] {
+      override def size = map.size
+      override def isEmpty = map.isEmpty
+      override def keys = map.keysIterator
+      override def elements = map.valuesIterator
+      override def get(o: Object) = map.get(o.asInstanceOf[K]) match {
+        case None        => null.asInstanceOf[V]
+        case Some(value) => value.asInstanceOf[V]
+      }
+      override def put(key: K, value: V) = throw new UnsupportedOperationException("This Dictionary is read-only!")
+      override def remove(o: Object) = throw new UnsupportedOperationException("This Dictionary is read-only!")
+    }
+  }
 }
