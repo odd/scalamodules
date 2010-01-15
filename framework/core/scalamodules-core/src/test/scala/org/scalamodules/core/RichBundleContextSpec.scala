@@ -34,7 +34,7 @@ class RichBundleContextSpec extends WordSpec with ShouldMatchers with MockitoSug
     }
 
     "the given service object is not-null" should {
-      "return a not-null Service" ignore {
+      "return a not-null ServiceCreator" ignore {
         RichBundleContext(mock[BundleContext]) createService "TEST" should not be (null)
       }
     }

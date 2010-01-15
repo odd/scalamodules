@@ -13,8 +13,8 @@ private[scalamodules] case class RichBundleContext(bundleContext: BundleContext)
 
   require(bundleContext != null, "The BundleContext must not be null!")
 
-  def createService[S <: AnyRef](service: S): Service[S, S, S, S] = {
+  def createService[S <: AnyRef](service: S): ServiceCreator[S, S, S, S] = {
     require(service != null, "The service object must not be null!")
-    Service(service)(bundleContext)
+    ServiceCreator(service)(bundleContext)
   }
 }
