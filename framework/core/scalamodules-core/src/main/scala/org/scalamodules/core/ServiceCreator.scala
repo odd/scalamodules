@@ -31,30 +31,29 @@ private[scalamodules] case class ServiceCreator[S <: AnyRef,
 
   def under[T1 >: S <: AnyRef,
             T2 >: S <: AnyRef]
-           (interfaces: (Option[Class[T1]], Option[Class[T2]])): ServiceCreator[S, T1, T2, S] = {
+           (interfaces: (Class[T1], Class[T2])): ServiceCreator[S, T1, T2, S] = {
     require(interfaces != null, "The service interfaces must not be null!")
-    under(interfaces._1, interfaces._2)
+    under(interfaces._1, Some(interfaces._2))
   }
 
   def under[T1 >: S <: AnyRef,
             T2 >: S <: AnyRef,
             T3 >: S <: AnyRef]
-           (interfaces: (Option[Class[T1]], Option[Class[T2]], Option[Class[T3]])): ServiceCreator[S, T1, T2, T3] = {
+           (interfaces: (Class[T1], Class[T2], Class[T3])): ServiceCreator[S, T1, T2, T3] = {
     require(interfaces != null, "The service interfaces must not be null!")
-    under(interfaces._1, interfaces._2, interfaces._3)
+    under(interfaces._1, Some(interfaces._2), Some(interfaces._3))
   }
 
   def under[T1 >: S <: AnyRef,
             T2 >: S <: AnyRef,
             T3 >: S <: AnyRef]
-           (interface1: Option[Class[T1]] = None,
+           (interface1: Class[T1],
             interface2: Option[Class[T2]] = None,
             interface3: Option[Class[T3]] = None): ServiceCreator[S, T1, T2, T3] = {
     require(interface1 != null, "The first service interface must not be null!")
     require(interface2 != null, "The second service interface must not be null!")
     require(interface3 != null, "The third service interface must not be null!")
-    require(properties != null, "The service properties must not be null!")
-    ServiceCreator(serviceObject, interface1, interface2, interface3, properties)(bundleContext)
+    ServiceCreator(serviceObject, Some(interface1), interface2, interface3, properties)(bundleContext)
   }
 
   def withProperties(properties: (String, Any)*): ServiceCreator[S, I1, I2, I3] = withProperties(IMap(properties: _*))

@@ -28,7 +28,7 @@ class coreSpec extends WordSpec with ShouldMatchers with MockitoSugar {
   "Calling interface" when {
     "the type is given explicitly" should {
       "return the correct type" in {
-        interface[String] should be (Some(classOf[String]))
+        interface[String] should be (classOf[String])
       }
     }
   }
@@ -36,7 +36,7 @@ class coreSpec extends WordSpec with ShouldMatchers with MockitoSugar {
   "Calling interfaces" when {
     "the two types are given explicitly" should {
       "return the correct types" in {
-        interfaces[String, String] should be (Some(classOf[String]), Some(classOf[String]))
+        interfaces[String, String] should be (classOf[String], classOf[String])
       }
     }
   }
@@ -45,7 +45,32 @@ class coreSpec extends WordSpec with ShouldMatchers with MockitoSugar {
 //  "Calling interfaces" when {
 //    "the three types are given explicitly" should {
 //      "return the correct types" in {
-//        interfaces[String, String, Int] should be (Some(classOf[String]), Some(classOf[String]), Some(classOf[Int]))
+//        interfaces[String, String, Int] should be (classOf[String], classOf[String], classOf[Int])
+//      }
+//    }
+//  }
+
+  "Calling withInterface" when {
+    "the type is given explicitly" should {
+      "return the correct type" in {
+        withInterface[String] should be (classOf[String])
+      }
+    }
+  }
+
+  "Calling withInterfaces" when {
+    "the two types are given explicitly" should {
+      "return the correct types" in {
+        withInterfaces[String, String] should be (classOf[String], classOf[String])
+      }
+    }
+  }
+
+// TODO Enable as soon as Scala supports overloading in package objects (hopefully in 2.8)!
+//  "Calling withInterfaces" when {
+//    "the three types are given explicitly" should {
+//      "return the correct types" in {
+//        withInterfaces[String, String, String] should be (classOf[String], classOf[String], classOf[String])
 //      }
 //    }
 //  }
@@ -84,3 +109,12 @@ class coreSpec extends WordSpec with ShouldMatchers with MockitoSugar {
     }
   }
 }
+
+
+class TestClass1
+class TestClass2
+class TestClass3
+
+trait TestInterface1
+trait TestInterface2
+trait TestInterface3 extends TestInterface1

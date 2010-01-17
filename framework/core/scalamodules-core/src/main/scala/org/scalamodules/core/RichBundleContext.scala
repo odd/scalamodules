@@ -17,4 +17,31 @@ private[scalamodules] case class RichBundleContext(bundleContext: BundleContext)
     require(service != null, "The service object must not be null!")
     ServiceCreator(service)(bundleContext)
   }
+
+  def findService[I1 <: AnyRef,
+                 I2 <: AnyRef]
+                (interfaces: (Class[I1], Class[I2])): ServiceFinder[I1, I2, Nothing] = {
+    require(interfaces != null, "The service interfaces must not be null!")
+    findService(interfaces._1, Some(interfaces._2))
+  }
+
+  def findService[I1 <: AnyRef,
+                 I2 <: AnyRef,
+                 I3 <: AnyRef]
+                (interfaces: (Class[I1], Class[I2], Class[I3])): ServiceFinder[I1, I2, I3] = {
+    require(interfaces != null, "The service interfaces must not be null!")
+    findService(interfaces._1, Some(interfaces._2), Some(interfaces._3))
+  }
+
+  def findService[I1 <: AnyRef,
+                 I2 <: AnyRef,
+                 I3 <: AnyRef]
+                (interface1: Class[I1],
+                 interface2: Option[Class[I2]] = None,
+                 interface3: Option[Class[I3]] = None): ServiceFinder[I1, I2, I3] = {
+    require(interface1 != null, "The first service interface must not be null!")
+    require(interface2 != null, "The second service interface must not be null!")
+    require(interface3 != null, "The third service interface must not be null!")
+    ServiceFinder(interface1, interface2, interface3)(bundleContext)
+  }
 }

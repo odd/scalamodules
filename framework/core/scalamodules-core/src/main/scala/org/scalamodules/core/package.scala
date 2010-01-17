@@ -23,25 +23,44 @@ package object core {
   implicit def toRichBundleContext(bundleContext: BundleContext) = RichBundleContext(bundleContext)
 
   /**
-   * Returns the given or inferred type wrapped in a Some.
+   * Returns the given or inferred type.
    */
-  def interface[I](implicit manifest: Manifest[I]) = Some(manifest.erasure.asInstanceOf[Class[I]])
+  def interface[I](implicit manifest: Manifest[I]) = manifest.erasure.asInstanceOf[Class[I]]
 
   /**
-    * Returns the given or inferred types as a Tuple2 with the types wrapped into Options (the last one obviously None).
-    */
+   * Returns the given or inferred types as a Tuple2.
+   */
   def interfaces[I1, I2](implicit manifest1: Manifest[I1], manifest2: Manifest[I2]) =
-    (Some(manifest1.erasure.asInstanceOf[Class[I1]]),
-     Some(manifest2.erasure.asInstanceOf[Class[I2]]))
+    (manifest1.erasure.asInstanceOf[Class[I1]], manifest2.erasure.asInstanceOf[Class[I2]])
 
 // TODO Enable as soon as Scala supports overloading in package objects (hopefully in 2.8)!
 //  /**
-//   * Returns the given or inferred types as a Tuple3 with the types wrapped into Options.
+//   * Returns the given or inferred types as a Tuple3.
 //   */
 //  def interfaces[I1, I2, I3](implicit manifest1: Manifest[I1], manifest2: Manifest[I2], manifest3: Manifest[I3]) =
-//    (Some(manifest1.erasure.asInstanceOf[Class[I1]]),
-//     Some(manifest2.erasure.asInstanceOf[Class[I2]]),
-//     Some(manifest3.erasure.asInstanceOf[Class[I3]]))
+//    (manifest1.erasure.asInstanceOf[Class[I1]],
+//     manifest2.erasure.asInstanceOf[Class[I2]],
+//     manifest3.erasure.asInstanceOf[Class[I3]])
+
+  /**
+   * Returns the given or inferred type.
+   */
+  def withInterface[I](implicit manifest: Manifest[I]) = manifest.erasure.asInstanceOf[Class[I]]
+
+  /**
+   * Returns the given or inferred types as a Tuple2.
+   */
+  def withInterfaces[I1, I2](implicit manifest1: Manifest[I1], manifest2: Manifest[I2]) =
+    (manifest1.erasure.asInstanceOf[Class[I1]], manifest2.erasure.asInstanceOf[Class[I2]])
+
+// TODO Enable as soon as Scala supports overloading in package objects (hopefully in 2.8)!
+//  /**
+//   * Returns the given or inferred types as a Tuple3.
+//   */
+//  def withInterfaces[I1, I2, I3](implicit manifest1: Manifest[I1], manifest2: Manifest[I2], manifest2: Manifest[I3]) =
+//    (manifest.erasure.asInstanceOf[Class[I1]],
+//     manifest.erasure.asInstanceOf[Class[I2]],
+//     manifest.erasure.asInstanceOf[Class[I3]])
 
   /**
    * Implicitly converts a Scala Map to a read-only Java Dictionary backed by the given Scala Map.
