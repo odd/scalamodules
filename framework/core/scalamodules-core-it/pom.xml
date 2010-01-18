@@ -61,6 +61,13 @@ Integration tests for ScalaModules Core
       <artifactId>scalamodules-scala-library</artifactId>
       <scope>provided</scope>
     </dependency>
+    <!-- Just for IntelliJ! Overwriting scope in order to avoid provisioning! -->
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-compiler</artifactId>
+      <version>${scala.version}</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.ops4j.pax.exam</groupId>
       <artifactId>pax-exam</artifactId>

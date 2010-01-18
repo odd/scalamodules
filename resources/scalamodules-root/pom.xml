@@ -103,6 +103,16 @@ Root POM for ScalaModules
   ######################################################################################################################
   -->
 
+  <!-- Just for IntelliJ! Overwrite scope with test where neccessary! -->
+  <dependencies>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-compiler</artifactId>
+      <version>${scala.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
   <dependencyManagement>
     <dependencies>
 
