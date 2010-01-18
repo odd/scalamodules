@@ -10,7 +10,7 @@
 
 <!--
 ########################################################################################################################
-Aggregator project model for ScalaModules.
+Aggregator for ScalaModules
 ########################################################################################################################
 -->
 
@@ -41,7 +41,7 @@ Aggregator project model for ScalaModules.
   ######################################################################################################################
   -->
 
-  <name>ScalaModules Aggregator</name>
+  <name>Aggregator for ScalaModules</name>
 
   <!--
   ######################################################################################################################
@@ -50,6 +50,8 @@ Aggregator project model for ScalaModules.
   -->
 
   <modules>
+    <module>resources/scalamodules-root</module>
+    <module>scalaosgi</module>
     <module>framework</module>
     <module>examples</module>
   </modules>

@@ -10,7 +10,7 @@
 
 <!--
 ########################################################################################################################
-ScalaModules Core.
+ScalaModules Core
 ########################################################################################################################
 -->
 
@@ -41,7 +41,7 @@ ScalaModules Core.
   ######################################################################################################################
   -->
 
-  <name>ScalaModules - Core</name>
+  <name>ScalaModules Core</name>
 
   <!--
   ######################################################################################################################
@@ -51,8 +51,8 @@ ScalaModules Core.
 
   <dependencies>
     <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-library</artifactId>
+      <groupId>org.scalamodules</groupId>
+      <artifactId>scalamodules-scala-library</artifactId>
     </dependency>
     <dependency>
       <groupId>org.osgi</groupId>
@@ -92,10 +92,7 @@ ScalaModules Core.
         <artifactId>maven-bundle-plugin</artifactId>
         <configuration>
           <instructions>
-            <Export-Package>
-              org.scalamodules.core;version="2.0",
-              org.scalamodules.core.dsl;version="2.0"
-            </Export-Package>
+            <Export-Package>org.scalamodules.core;version="2.0"</Export-Package>
           </instructions>
         </configuration>
       </plugin>

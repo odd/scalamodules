@@ -10,7 +10,7 @@
 
 <!--
 ########################################################################################################################
-Aggregator project model for the ScalaModules Core.
+Aggregator for ScalaModules Core
 ########################################################################################################################
 -->
 
@@ -41,7 +41,7 @@ Aggregator project model for the ScalaModules Core.
   ######################################################################################################################
   -->
 
-  <name>ScalaModules - Core Aggregator</name>
+  <name>Aggregator for ScalaModules Core</name>
 
   <!--
   ######################################################################################################################
@@ -51,6 +51,7 @@ Aggregator project model for the ScalaModules Core.
 
   <modules>
     <module>scalamodules-core</module>
+    <module>scalamodules-core-it</module>
   </modules>
 
 </project>

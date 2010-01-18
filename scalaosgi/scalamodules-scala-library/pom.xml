@@ -10,7 +10,7 @@
 
 <!--
 ########################################################################################################################
-ScalaModules Examples - API
+ScalaModules OSGi-fied Scala Library "scala-library"
 ########################################################################################################################
 -->
 
@@ -32,7 +32,9 @@ ScalaModules Examples - API
     <version>2.0-SNAPSHOT</version>
     <relativePath>../../resources/scalamodules-root/pom.xml</relativePath>
   </parent>
-  <artifactId>scalamodules-examples-api</artifactId>
+  <artifactId>scalamodules-scala-library</artifactId>
+  <version>${scala.version}</version>
+  <packaging>bundle</packaging>
 
   <!--
   ######################################################################################################################
@@ -40,7 +42,7 @@ ScalaModules Examples - API
   ######################################################################################################################
   -->
 
-  <name>ScalaModules Examples - API</name>
+  <name>ScalaModules OSGi-fied Scala Library "scala-library"</name>
 
   <!--
   ######################################################################################################################
@@ -50,9 +52,10 @@ ScalaModules Examples - API
 
   <dependencies>
     <dependency>
-      <groupId>org.scalamodules</groupId>
-      <artifactId>scalamodules-scala-library</artifactId>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
       <version>${scala.version}</version>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 
@@ -65,21 +68,20 @@ ScalaModules Examples - API
   <build>
     <plugins>
       <plugin>
-        <artifactId>maven-source-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>com.google.code.maven-license-plugin</groupId>
-        <artifactId>maven-license-plugin</artifactId>
-          <configuration>
-            <header>${basedir}/../../resources/header.txt</header>
-          </configuration>
-      </plugin>
-      <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
         <configuration>
           <instructions>
-            <Export-Package>org.scalamodules.examples;version="2.0"</Export-Package>
+            <!-- TODO Replace this by the below commented line as soon as no longer in SNAPSHOT mode! -->
+            <Export-Package>scala.*;version=2.8.0</Export-Package>
+            <!--Export-Package>scala.*;version=${scala.version}</Export-Package-->
+            <!-- TODO This dependency is expected to go away! -->
+            <Import-Package>sun.*;resolution:=optional,*</Import-Package>
+            <!-- Include library.properties and other resources -->
+            <Private-Package>*</Private-Package>
+            <DynamicImport-Package>*</DynamicImport-Package>
+            <_nouses>true</_nouses>
+            <_versionpolicy>[$(@),$(version;=+;$(@)))</_versionpolicy>
           </instructions>
         </configuration>
       </plugin>
