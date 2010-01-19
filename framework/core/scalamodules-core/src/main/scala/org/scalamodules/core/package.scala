@@ -20,7 +20,7 @@ package object core {
   /**
    * Implicitly converts a BundleContext to a RichBundleContext backed by the given Scala Map.
    */
-  implicit def toRichBundleContext(bundleContext: BundleContext) = RichBundleContext(bundleContext)
+  implicit def toRichBundleContext(context: BundleContext) = RichBundleContext(context)
 
   /**
    * Returns the given or inferred type.
@@ -46,21 +46,6 @@ package object core {
    * Returns the given or inferred type.
    */
   def withInterface[I](implicit manifest: Manifest[I]) = manifest.erasure.asInstanceOf[Class[I]]
-
-  /**
-   * Returns the given or inferred types as a Tuple2.
-   */
-  def withInterfaces[I1, I2](implicit manifest1: Manifest[I1], manifest2: Manifest[I2]) =
-    (manifest1.erasure.asInstanceOf[Class[I1]], manifest2.erasure.asInstanceOf[Class[I2]])
-
-// TODO Enable as soon as Scala supports overloading in package objects (hopefully in 2.8)!
-//  /**
-//   * Returns the given or inferred types as a Tuple3.
-//   */
-//  def withInterfaces[I1, I2, I3](implicit manifest1: Manifest[I1], manifest2: Manifest[I2], manifest2: Manifest[I3]) =
-//    (manifest.erasure.asInstanceOf[Class[I1]],
-//     manifest.erasure.asInstanceOf[Class[I2]],
-//     manifest.erasure.asInstanceOf[Class[I3]])
 
   /**
    * Implicitly converts a Scala Map to a read-only Java Dictionary backed by the given Scala Map.

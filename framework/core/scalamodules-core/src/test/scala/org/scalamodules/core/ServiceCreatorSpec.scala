@@ -168,21 +168,21 @@ class ServiceCreatorSpec extends WordSpec with ShouldMatchers with MockitoSugar 
 
     "there are no custom service properties" should {
       "call BundleContext.registerService correctly" in {
-        val bundleContext = mock[BundleContext]
+        val context = mock[BundleContext]
         val service = new TestClass1
-        ServiceCreator(service)(bundleContext).andRegister
-        verify(bundleContext).registerService(Array(classOf[TestClass1].getName), service, null)
+        ServiceCreator(service)(context).andRegister
+        verify(context).registerService(Array(classOf[TestClass1].getName), service, null)
       }
     }
 
     "there are custom service properties" should {
       "call BundleContext.registerService correctly" in {
-        val bundleContext = mock[BundleContext]
+        val context = mock[BundleContext]
         val service = new TestClass1
         val properties = Map("scala" -> "modules")
         val capturedProperties = ArgumentCaptor.forClass(classOf[Dictionary[String, String]])
-        ServiceCreator(service)(bundleContext).withProperties(properties).andRegister
-        verify(bundleContext).registerService(Matchers.eq(Array(classOf[TestClass1].getName)), Matchers.eq(service), capturedProperties.capture)
+        ServiceCreator(service)(context).withProperties(properties).andRegister
+        verify(context).registerService(Matchers.eq(Array(classOf[TestClass1].getName)), Matchers.eq(service), capturedProperties.capture)
         capturedProperties.getValue should have size (1)
         capturedProperties.getValue.get("scala") should be ("modules")
       }

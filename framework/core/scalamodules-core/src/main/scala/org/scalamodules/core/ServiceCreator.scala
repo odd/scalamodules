@@ -20,14 +20,14 @@ private[scalamodules] case class ServiceCreator[S <: AnyRef,
                                                 interface2: Option[Class[I2]] = None,
                                                 interface3: Option[Class[I3]] = None,
                                                 properties: Option[Map[String, Any]] = None)
-                                               (bundleContext: BundleContext) {
+                                               (context: BundleContext) {
 
   require(serviceObject != null, "The service object must not be null!")
   require(interface1 != null, "The first service interface must not be null!")
   require(interface2 != null, "The second service interface must not be null!")
   require(interface3 != null, "The third service interface must not be null!")
   require(properties != null, "The service properties must not be null!")
-  require(bundleContext != null, "The BundleContext must not be null!")
+  require(context != null, "The BundleContext must not be null!")
 
   def under[T1 >: S <: AnyRef,
             T2 >: S <: AnyRef]
@@ -53,19 +53,19 @@ private[scalamodules] case class ServiceCreator[S <: AnyRef,
     require(interface1 != null, "The first service interface must not be null!")
     require(interface2 != null, "The second service interface must not be null!")
     require(interface3 != null, "The third service interface must not be null!")
-    ServiceCreator(serviceObject, Some(interface1), interface2, interface3, properties)(bundleContext)
+    ServiceCreator(serviceObject, Some(interface1), interface2, interface3, properties)(context)
   }
 
   def withProperties(properties: (String, Any)*): ServiceCreator[S, I1, I2, I3] = withProperties(IMap(properties: _*))
 
   def withProperties(properties: Map[String, Any]): ServiceCreator[S, I1, I2, I3] = {
     require(properties != null, "The service properties must not be null!")
-    ServiceCreator(serviceObject, interface1, interface2, interface3, Some(properties))(bundleContext)
+    ServiceCreator(serviceObject, interface1, interface2, interface3, Some(properties))(context)
   }
 
   def andRegister: ServiceRegistration = properties match {
-    case None => bundleContext.registerService(interfaces, serviceObject, null)
-    case Some(p) => bundleContext.registerService(interfaces, serviceObject, p)
+    case None => context.registerService(interfaces, serviceObject, null)
+    case Some(p) => context.registerService(interfaces, serviceObject, p)
   }
 
   private[scalamodules] def interfaces: Array[String] = {

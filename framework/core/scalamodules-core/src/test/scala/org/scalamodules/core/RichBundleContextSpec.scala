@@ -42,9 +42,7 @@ class RichBundleContextSpec extends WordSpec with ShouldMatchers with MockitoSug
 
   "Calling RichBundleContext.findService" when {
 
-    // First we test the "normal" version
-
-    "the given first service interface is null" should {
+    "the given service interface is null" should {
       "throw an IllegalArgumentException" in {
         evaluating {
           RichBundleContext(mock[BundleContext]).findService(null.asInstanceOf[Class[TestInterface1]])
@@ -52,52 +50,10 @@ class RichBundleContextSpec extends WordSpec with ShouldMatchers with MockitoSug
       }
     }
 
-    "the given second service interface is null" should {
-      "throw an IllegalArgumentException" in {
-        evaluating {
-          RichBundleContext(mock[BundleContext]).findService(classOf[TestInterface1], null)
-        } should produce [IllegalArgumentException]
-      }
-    }
-
-    "the given third service interface is null" should {
-      "throw an IllegalArgumentException" in {
-        evaluating {
-          RichBundleContext(mock[BundleContext]).findService(classOf[TestInterface1], interface3 = null)
-        } should produce [IllegalArgumentException]
-      }
-    }
-
     "the given service interfaces are not-null" should {
       "return a not-null ServiceFinder with the correct interfaces" in {
-        val serviceGetter = RichBundleContext(mock[BundleContext]).findService(classOf[TestInterface1],
-                                                                               Some(classOf[TestInterface2]),
-                                                                               Some(classOf[TestInterface3]))
-        serviceGetter should not be (null)
-        serviceGetter.interface1 should be (classOf[TestInterface1])
-        serviceGetter.interface2 should be (Some(classOf[TestInterface2]))
-        serviceGetter.interface3 should be (Some(classOf[TestInterface3]))
-      }
-    }
-
-    // And now the tuple versions: We only need to test for not-null, because they delegate to the "normal" version
-
-    "the given service interfaces Tuple2 is null" should {
-      "throw an IllegalArgumentException" in {
-        evaluating {
-          RichBundleContext(mock[BundleContext]).findService(null.asInstanceOf[Tuple2[Class[TestInterface1],
-                                                                                      Class[TestInterface2]]])
-        } should produce [IllegalArgumentException]
-      }
-    }
-
-    "the given service interfaces Tuple3 is null" should {
-      "throw an IllegalArgumentException" in {
-        evaluating {
-          RichBundleContext(mock[BundleContext]).findService(null.asInstanceOf[Tuple3[Class[TestInterface1],
-                                                                                      Class[TestInterface2],
-                                                                                      Class[TestInterface3]]])
-        } should produce [IllegalArgumentException]
+        val serviceFinder = RichBundleContext(mock[BundleContext]).findService(classOf[TestInterface1])
+        serviceFinder should not be (null)
       }
     }
   }

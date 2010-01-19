@@ -20,8 +20,8 @@ class coreSpec extends WordSpec with ShouldMatchers with MockitoSugar {
 
   "A BundleContext" should {
     "be converted to a RichBundleContext implicitly" in {
-      val bundleContext = mock[BundleContext]
-      val richBundleContext: RichBundleContext = bundleContext
+      val context = mock[BundleContext]
+      val richBundleContext: RichBundleContext = context
     }
   }
 
@@ -57,23 +57,6 @@ class coreSpec extends WordSpec with ShouldMatchers with MockitoSugar {
       }
     }
   }
-
-  "Calling withInterfaces" when {
-    "the two types are given explicitly" should {
-      "return the correct types" in {
-        withInterfaces[String, String] should be (classOf[String], classOf[String])
-      }
-    }
-  }
-
-// TODO Enable as soon as Scala supports overloading in package objects (hopefully in 2.8)!
-//  "Calling withInterfaces" when {
-//    "the three types are given explicitly" should {
-//      "return the correct types" in {
-//        withInterfaces[String, String, String] should be (classOf[String], classOf[String], classOf[String])
-//      }
-//    }
-//  }
 
   "Calling scalaMapToJavaDictionary" when {
     val emptyScalaMap = IMap[Any, Any]()
@@ -115,6 +98,8 @@ class TestClass1
 class TestClass2
 class TestClass3
 
-trait TestInterface1
+trait TestInterface1 {
+  def name = getClass.getName
+}
 trait TestInterface2
 trait TestInterface3 extends TestInterface1

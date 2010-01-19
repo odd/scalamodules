@@ -22,7 +22,7 @@ class BundleTest {
   def test() {
     // Start tracking
 
-    // Get one service should result in None
+    // Find one service should result in None
 
     // Registering a service should result in greetingStatus == ADDING-1
 
