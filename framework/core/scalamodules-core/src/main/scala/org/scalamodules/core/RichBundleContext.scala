@@ -9,17 +9,19 @@ package org.scalamodules.core
 
 import org.osgi.framework.{ BundleContext }
 
-private[scalamodules] case class RichBundleContext(context: BundleContext) {
+private[scalamodules] class RichBundleContext(context: BundleContext) {
 
   require(context != null, "The BundleContext must not be null!")
 
   def createService[S <: AnyRef](service: S): ServiceCreator[S, S, S, S] = {
     require(service != null, "The service object must not be null!")
-    ServiceCreator(service)(context)
+    new ServiceCreator(service)(context)
   }
 
   def findService[I <: AnyRef](interface: Class[I]): ServiceFinder[I] = {
     require(interface != null, "The service interface must not be null!")
     new ServiceFinder(interface)(context)
   }
+
+  // TODO Add findServices (and ServicesFinder like ServiceFinder)!
 }

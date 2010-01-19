@@ -11,16 +11,16 @@ import org.osgi.framework.{ BundleContext, ServiceRegistration }
 import scala.collection.Map
 import scala.collection.immutable.{ Map => IMap }
 
-private[scalamodules] case class ServiceCreator[S <: AnyRef,
-                                                I1 >: S <: AnyRef,
-                                                I2 >: S <: AnyRef,
-                                                I3 >: S <: AnyRef]
-                                               (serviceObject: S,
-                                                interface1: Option[Class[I1]] = None,
-                                                interface2: Option[Class[I2]] = None,
-                                                interface3: Option[Class[I3]] = None,
-                                                properties: Option[Map[String, Any]] = None)
-                                               (context: BundleContext) {
+private[scalamodules] class ServiceCreator[S <: AnyRef,
+                                           I1 >: S <: AnyRef,
+                                           I2 >: S <: AnyRef,
+                                           I3 >: S <: AnyRef]
+                                          (serviceObject: S,
+                                           interface1: Option[Class[I1]] = None,
+                                           interface2: Option[Class[I2]] = None,
+                                           interface3: Option[Class[I3]] = None,
+                                           properties: Option[Map[String, Any]] = None)
+                                          (context: BundleContext) {
 
   require(serviceObject != null, "The service object must not be null!")
   require(interface1 != null, "The first service interface must not be null!")
@@ -53,14 +53,14 @@ private[scalamodules] case class ServiceCreator[S <: AnyRef,
     require(interface1 != null, "The first service interface must not be null!")
     require(interface2 != null, "The second service interface must not be null!")
     require(interface3 != null, "The third service interface must not be null!")
-    ServiceCreator(serviceObject, Some(interface1), interface2, interface3, properties)(context)
+    new ServiceCreator(serviceObject, Some(interface1), interface2, interface3, properties)(context)
   }
 
   def withProperties(properties: (String, Any)*): ServiceCreator[S, I1, I2, I3] = withProperties(IMap(properties: _*))
 
   def withProperties(properties: Map[String, Any]): ServiceCreator[S, I1, I2, I3] = {
     require(properties != null, "The service properties must not be null!")
-    ServiceCreator(serviceObject, interface1, interface2, interface3, Some(properties))(context)
+    new ServiceCreator(serviceObject, interface1, interface2, interface3, Some(properties))(context)
   }
 
   def andRegister: ServiceRegistration = properties match {

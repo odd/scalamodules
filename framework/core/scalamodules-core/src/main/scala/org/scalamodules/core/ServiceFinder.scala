@@ -9,10 +9,8 @@ package org.scalamodules.core
 
 import org.osgi.framework.BundleContext
 
-// TODO Should we really use two parameter lists here and elsewhere?
-private[scalamodules] class ServiceFinder[I <: AnyRef]
-                                         (interface: Class[I])
-                                         (val context: BundleContext) extends ServiceInvoker[I] {
+private[scalamodules] class ServiceFinder[I <: AnyRef](interface: Class[I])
+                                                      (context: BundleContext) {
 
   require(interface != null, "The service interface must not be null!")
   require(context != null, "The BundleContext must not be null!")
@@ -21,7 +19,9 @@ private[scalamodules] class ServiceFinder[I <: AnyRef]
     require(f != null, "The function to be applied to the service must not be null!")
     context getServiceReference interface.getName match {
       case null => None
-      case serviceReference => invoke(serviceReference, f)
+      case serviceReference => invokeService(serviceReference, f)(context)
     }
   }
+
+  // TODO Add andApply for service plus properties!
 }

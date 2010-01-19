@@ -57,7 +57,7 @@ class ServiceFinderSpec extends WordSpec with ShouldMatchers with MockitoSugar {
         val serviceReference = mock[ServiceReference]
         when(context.getServiceReference(classOf[TestInterface1].getName)).thenReturn(serviceReference)
         val service: TestInterface1 = null
-        when(context.getService(serviceReference)).thenReturn(service, service)
+        when(context.getService(serviceReference)).thenReturn(service, service)  // TODO Can we get rid of this double arg?
         val serviceFinder = new ServiceFinder(classOf[TestInterface1])(context)
         serviceFinder andApply { _.name } should be (None)
         verify(context).ungetService(serviceReference)
@@ -71,7 +71,7 @@ class ServiceFinderSpec extends WordSpec with ShouldMatchers with MockitoSugar {
         val serviceReference = mock[ServiceReference]
         when(context.getServiceReference(classOf[TestInterface1].getName)).thenReturn(serviceReference)
         val service = mock[TestInterface1]
-        when(context.getService(serviceReference)).thenReturn(service, service)
+        when(context.getService(serviceReference)).thenReturn(service, service)  // TODO Can we get rid of this double arg?
         when(service.name).thenReturn(yes)
         val serviceFinder = new ServiceFinder(classOf[TestInterface1])(context)
         serviceFinder andApply { _.name } should be (Some(yes))

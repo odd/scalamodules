@@ -8,7 +8,7 @@
 package org.scalamodules
 
 import java.util.Dictionary
-import org.osgi.framework.{ BundleContext }
+import org.osgi.framework.{ BundleContext, ServiceReference}
 import scala.collection.Map
 import scala.collection.JavaConversions.asEnumeration
 
@@ -20,7 +20,7 @@ package object core {
   /**
    * Implicitly converts a BundleContext to a RichBundleContext backed by the given Scala Map.
    */
-  implicit def toRichBundleContext(context: BundleContext) = RichBundleContext(context)
+  implicit def toRichBundleContext(context: BundleContext) = new RichBundleContext(context)
 
   /**
    * Returns the given or inferred type.
@@ -64,5 +64,22 @@ package object core {
       override def put(key: K, value: V) = throw new UnsupportedOperationException("This Dictionary is read-only!")
       override def remove(o: Object) = throw new UnsupportedOperationException("This Dictionary is read-only!")
     }
+  }
+
+  /**
+   * Invokes the given function on the service obtained from the given BundleContext with the given ServiceReference.
+   */
+  private[scalamodules] def invokeService[I, T](serviceReference: ServiceReference,
+                                                f: I => T)
+                                               (context: BundleContext): Option[T] = {
+    require(context != null, "The BundleContext must not be null!")
+    require(serviceReference != null, "The ServiceReference must not be null!")
+    require(f != null, "The function to be applied to the service must not be null!")
+    try {
+      context getService serviceReference match {  // Might be null even if serviceReference is not null!
+        case null    => None
+        case service => Some(f(service.asInstanceOf[I]))
+      }
+    } finally context ungetService serviceReference  // Must be called!
   }
 }

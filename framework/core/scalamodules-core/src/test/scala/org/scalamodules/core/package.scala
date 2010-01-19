@@ -8,12 +8,13 @@
 package org.scalamodules.core
 
 import java.util.Dictionary
-import org.osgi.framework.BundleContext
+import org.mockito.Mockito._
 import org.scalatest.WordSpec
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.mock.MockitoSugar
 import scala.collection.immutable.{ Map => IMap }
+import org.osgi.framework.{ BundleContext, ServiceReference }
 
 @org.junit.runner.RunWith(classOf[JUnitRunner])
 class coreSpec extends WordSpec with ShouldMatchers with MockitoSugar {
@@ -91,8 +92,53 @@ class coreSpec extends WordSpec with ShouldMatchers with MockitoSugar {
       }
     }
   }
-}
 
+  "Calling invokeService" when {
+
+    "the given BundleContext is null" should {
+      "throw an IllegalArgumentException" in {
+        evaluating {
+          invokeService(mock[ServiceReference], { s: String => "" })(null)
+        } should produce [IllegalArgumentException]
+      }
+    }
+
+    "the given ServiceReference is null" should {
+      "throw an IllegalArgumentException" in {
+        evaluating {
+          invokeService(null, { s: String => "" })(mock[BundleContext])
+        } should produce [IllegalArgumentException]
+      }
+    }
+
+    "the given function is null" should {
+      "throw an IllegalArgumentException" in {
+        evaluating {
+          invokeService(mock[ServiceReference], null)(mock[BundleContext])
+        } should produce [IllegalArgumentException]
+      }
+    }
+
+    "there is no service available" should {
+      "result in appropriate calls to BundleContext and return None" in {
+        val context = mock[BundleContext]
+        val serviceReference = mock[ServiceReference]
+        when(context.getService(serviceReference)).thenReturn(null, null)  // TODO Can we get rid of this double arg?
+        invokeService(serviceReference, { s: String => "" })(context) should be (None)
+      }
+    }
+
+    "there is a service available" should {
+      "result in appropriate calls to BundleContext and return None" in {
+        val context = mock[BundleContext]
+        val serviceReference = mock[ServiceReference]
+        when(context.getService(serviceReference)).thenReturn("Scala", "Scala")  // TODO Can we get rid of this double arg?
+        invokeService(serviceReference, { s: String => s + "Modules" })(context) should be (Some("ScalaModules"))
+        verify(context).ungetService(serviceReference)
+      }
+    }
+  }
+}
 
 class TestClass1
 class TestClass2

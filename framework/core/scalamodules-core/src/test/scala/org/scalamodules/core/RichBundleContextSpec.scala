@@ -20,7 +20,7 @@ class RichBundleContextSpec extends WordSpec with ShouldMatchers with MockitoSug
 
     "the given BundleContext is null" should {
       "throw an IllegalArgumentException" in {
-        evaluating { RichBundleContext(null) } should produce [IllegalArgumentException]
+        evaluating { new RichBundleContext(null) } should produce [IllegalArgumentException]
       }
     }
   }
@@ -29,13 +29,13 @@ class RichBundleContextSpec extends WordSpec with ShouldMatchers with MockitoSug
 
     "the given service object is null" should {
       "throw an IllegalArgumentException" in {
-        evaluating { RichBundleContext(mock[BundleContext]) createService null } should produce [IllegalArgumentException]
+        evaluating { new RichBundleContext(mock[BundleContext]) createService null } should produce [IllegalArgumentException]
       }
     }
 
     "the given service object is not-null" should {
       "return a not-null ServiceCreator" in {
-        RichBundleContext(mock[BundleContext]) createService "TEST" should not be (null)
+        new RichBundleContext(mock[BundleContext]) createService "TEST" should not be (null)
       }
     }
   }
@@ -45,14 +45,14 @@ class RichBundleContextSpec extends WordSpec with ShouldMatchers with MockitoSug
     "the given service interface is null" should {
       "throw an IllegalArgumentException" in {
         evaluating {
-          RichBundleContext(mock[BundleContext]).findService(null.asInstanceOf[Class[TestInterface1]])
+          new RichBundleContext(mock[BundleContext]).findService(null.asInstanceOf[Class[TestInterface1]])
         } should produce [IllegalArgumentException]
       }
     }
 
     "the given service interfaces are not-null" should {
       "return a not-null ServiceFinder with the correct interfaces" in {
-        val serviceFinder = RichBundleContext(mock[BundleContext]).findService(classOf[TestInterface1])
+        val serviceFinder = new RichBundleContext(mock[BundleContext]).findService(classOf[TestInterface1])
         serviceFinder should not be (null)
       }
     }
