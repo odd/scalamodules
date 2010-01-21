@@ -141,11 +141,11 @@ class coreSpec extends WordSpec with ShouldMatchers with MockitoSugar {
 }
 
 class TestClass1
-class TestClass2
-class TestClass3
+class TestClass2 extends TestInterface2
+class TestClass3 extends TestInterface2 with TestInterface3
 
 trait TestInterface1 {
   def name = getClass.getName
 }
 trait TestInterface2
-trait TestInterface3 extends TestInterface1
+trait TestInterface3
