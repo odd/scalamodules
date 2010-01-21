@@ -18,7 +18,7 @@ private[scalamodules] class ServiceFinder[I <: AnyRef](interface: Class[I])
   def andApply[T](f: I => T): Option[T] = {
     require(f != null, "The function to be applied to the service must not be null!")
     context getServiceReference interface.getName match {
-      case null => None
+      case null             => None
       case serviceReference => invokeService(serviceReference, f)(context)
     }
   }

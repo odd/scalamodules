@@ -11,42 +11,29 @@ package test
 import org.ops4j.pax.exam.Inject
 import org.ops4j.pax.exam.junit.MavenConfiguredJUnit4TestRunner
 import org.osgi.framework.BundleContext
+import org.scalatest.matchers.ShouldMatchers
+import java.lang.String
 
 @org.junit.runner.RunWith(classOf[MavenConfiguredJUnit4TestRunner])
-class BundleTest {
+class BundleTest extends ShouldMatchers {
+
+  val Service1 = "service1"
 
   @Inject
-  private var ctx: BundleContext = _
+  private var context: BundleContext = _
 
   @org.junit.Test
   def test() {
-    // Start tracking
+    context findService withInterface[ServiceInterface] andApply { s => s } should be (None)
 
-    // Find one service should result in None
-
-    // Registering a service should result in greetingStatus == ADDING-1
-
-    // Get one service should result in Some("Hello!")
-
-    // Register another service with properties should result in greetingStatus == ADDING-2
-
-    // Get one service should result in Some("Welcome...")
-
-    // Register another service with multiple service interfaces
-
-    // Get one for Introduction should result in a successful look-up
-
-    // Get one for Interested should result in a successful look-up
-
-    // Get many services should result in Some(List("Hello!", "Welcome!", "Howdy!))
-
-    // Get many services with filter (!(name=*)) should result in Some(List("Hello!", "Howdy!"))
-
-    // Because of the partial function support this must not throw an error!
-
-    // Unregistering a service should result in greetingStatus == "REMOVED-1"
-
-    // Stopping the tracking should result in greetingStatus == "REMOVED-3" (three Greeting services untracked)
-
+    context createService ServiceImplementation(Service1) andRegister
+    
+    context findService withInterface[ServiceInterface] andApply { _.name } should be (Some(Service1))
   }
+
+  trait ServiceInterface {
+    def name: String
+  }
+
+  case class ServiceImplementation(name: String) extends ServiceInterface
 }

@@ -10,7 +10,7 @@
 
 <!--
 ########################################################################################################################
-Integration tests for ScalaModules Core
+ScalaModules Examples - Find
 ########################################################################################################################
 -->
 
@@ -30,10 +30,9 @@ Integration tests for ScalaModules Core
     <groupId>org.scalamodules</groupId>
     <artifactId>scalamodules-root</artifactId>
     <version>2.0-SNAPSHOT</version>
-    <relativePath>../../../resources/scalamodules-root/pom.xml</relativePath>
+    <relativePath>../../resources/scalamodules-root/pom.xml</relativePath>
   </parent>
-  <artifactId>scalamodules-core-it</artifactId>
-  <packaging>jar</packaging>
+  <artifactId>scalamodules-examples-find</artifactId>
 
   <!--
   ######################################################################################################################
@@ -41,7 +40,7 @@ Integration tests for ScalaModules Core
   ######################################################################################################################
   -->
 
-  <name>Integration tests for ScalaModules Core</name>
+  <name>ScalaModules Examples - Find</name>
 
   <!--
   ######################################################################################################################
@@ -52,38 +51,17 @@ Integration tests for ScalaModules Core
   <dependencies>
     <dependency>
       <groupId>org.scalamodules</groupId>
-      <artifactId>scalamodules-core</artifactId>
+      <artifactId>scalamodules-examples-api</artifactId>
       <version>${project.version}</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.scalamodules</groupId>
-      <artifactId>scalamodules-scala-library</artifactId>
-      <scope>provided</scope>
+      <artifactId>scalamodules-core</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.scalatest</groupId>
-      <artifactId>scalatest</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.ops4j.pax.exam</groupId>
-      <artifactId>pax-exam</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.ops4j.pax.exam</groupId>
-      <artifactId>pax-exam-junit</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.ops4j.pax.exam</groupId>
-      <artifactId>pax-exam-container-default</artifactId>
-    </dependency>
-    <!-- Just for IntelliJ! Overwriting scope in order to avoid provisioning! -->
-    <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-compiler</artifactId>
-      <version>${scala.version}</version>
-      <scope>test</scope>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.core</artifactId>
     </dependency>
   </dependencies>
 
@@ -96,23 +74,23 @@ Integration tests for ScalaModules Core
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <configuration>
-          <skip>true</skip>
-        </configuration>
+        <artifactId>maven-source-plugin</artifactId>
       </plugin>
       <plugin>
         <groupId>com.google.code.maven-license-plugin</groupId>
         <artifactId>maven-license-plugin</artifactId>
+          <configuration>
+            <header>${basedir}/../../resources/header.txt</header>
+          </configuration>
       </plugin>
       <plugin>
-        <groupId>org.ops4j.pax.exam</groupId>
-        <artifactId>maven-paxexam-plugin</artifactId>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
         <configuration>
-          <options>
-            <autoWrap>true</autoWrap>
-          </options>
+          <instructions>
+            <Private-Package>org.scalamodules.examples.find</Private-Package>
+            <Bundle-Activator>org.scalamodules.examples.find.Activator</Bundle-Activator>
+          </instructions>
         </configuration>
       </plugin>
       <plugin>
