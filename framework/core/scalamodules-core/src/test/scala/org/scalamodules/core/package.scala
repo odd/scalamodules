@@ -26,30 +26,32 @@ class coreSpec extends WordSpec with ShouldMatchers with MockitoSugar {
     }
   }
 
+  "Any object" when {
+
+    "null" should {
+      "be converted to None implicitly" in {
+        val s: String = null
+        val o: Option[String] = s
+        o should be (None)
+      }
+    }
+
+    "not-null" should {
+      "be converted to Some implicitly" in {
+        val s = ""
+        val o: Option[String] = s
+        o should be (Some(s))
+      }
+    }
+  }
+
   "Calling interface" when {
     "the type is given explicitly" should {
       "return the correct type" in {
-        interface[String] should be (classOf[String])
+        interface[String] should be (Some(classOf[String]))
       }
     }
   }
-
-  "Calling interfaces" when {
-    "the two types are given explicitly" should {
-      "return the correct types" in {
-        interfaces[String, String] should be (classOf[String], classOf[String])
-      }
-    }
-  }
-
-// TODO Enable as soon as Scala supports overloading in package objects (hopefully in 2.8)!
-//  "Calling interfaces" when {
-//    "the three types are given explicitly" should {
-//      "return the correct types" in {
-//        interfaces[String, String, Int] should be (classOf[String], classOf[String], classOf[Int])
-//      }
-//    }
-//  }
 
   "Calling withInterface" when {
     "the type is given explicitly" should {

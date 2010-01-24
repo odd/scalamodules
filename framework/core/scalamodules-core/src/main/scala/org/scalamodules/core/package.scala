@@ -23,24 +23,14 @@ package object core {
   implicit def toRichBundleContext(context: BundleContext) = new RichBundleContext(context)
 
   /**
-   * Returns the given or inferred type.
+   * Implicitly converts any object to an Option: null is converted to None, not-null objects are wrapped in a Some.
    */
-  def interface[I](implicit manifest: Manifest[I]) = manifest.erasure.asInstanceOf[Class[I]]
+  implicit def anyToOption[T](t: T) = if (t == null) None else Some(t)
 
   /**
-   * Returns the given or inferred types as a Tuple2.
+   * Returns the given or inferred type wrapped in a Some.
    */
-  def interfaces[I1, I2](implicit manifest1: Manifest[I1], manifest2: Manifest[I2]) =
-    (manifest1.erasure.asInstanceOf[Class[I1]], manifest2.erasure.asInstanceOf[Class[I2]])
-
-// TODO Enable as soon as Scala supports overloading in package objects (hopefully in 2.8)!
-//  /**
-//   * Returns the given or inferred types as a Tuple3.
-//   */
-//  def interfaces[I1, I2, I3](implicit manifest1: Manifest[I1], manifest2: Manifest[I2], manifest3: Manifest[I3]) =
-//    (manifest1.erasure.asInstanceOf[Class[I1]],
-//     manifest2.erasure.asInstanceOf[Class[I2]],
-//     manifest3.erasure.asInstanceOf[Class[I3]])
+  def interface[I](implicit manifest: Manifest[I]) = Some(manifest.erasure.asInstanceOf[Class[I]])
 
   /**
    * Returns the given or inferred type.
