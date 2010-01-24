@@ -118,7 +118,7 @@ class RichBundleContextSpec extends WordSpec with ShouldMatchers with MockitoSug
       "call BundleContext.registerService with the given service properties" in {
         val context: BundleContext = mock[BundleContext]
         val propertiesCaptor = ArgumentCaptor.forClass(classOf[java.util.Dictionary[String, Any]])
-        new RichBundleContext(context).createService(new TestClass1, Some(Map("a" -> "b")))
+        new RichBundleContext(context).createService(new TestClass1, Map("a" -> "b"))
         verify(context).registerService(Matchers.any.asInstanceOf[Array[String]], Matchers.any, propertiesCaptor.capture)
         propertiesCaptor.getValue.size should be (1)
         propertiesCaptor.getValue.get("a") should be ("b")

@@ -23,9 +23,9 @@ package object core {
   implicit def toRichBundleContext(context: BundleContext) = new RichBundleContext(context)
 
   /**
-   * Implicitly converts any object to an Option: null is converted to None, not-null objects are wrapped in a Some.
+   * Implicitly converts a Tuple2 into a Map.
    */
-  implicit def anyToOption[T](t: T) = if (t == null) None else Some(t)
+  implicit def tuple2ToMap[A, B](tuple2: (A, B)) = if (tuple2 == null) null else Map(tuple2)
 
   /**
    * Returns the given or inferred type wrapped in a Some.

@@ -9,6 +9,7 @@ package org.scalamodules.core
 
 import java.util.Dictionary
 import org.mockito.Mockito._
+import scala.collection.Map
 import org.scalatest.WordSpec
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.matchers.ShouldMatchers
@@ -26,21 +27,23 @@ class coreSpec extends WordSpec with ShouldMatchers with MockitoSugar {
     }
   }
 
-  "Any object" when {
+  "A Tuple2" when {
 
     "null" should {
-      "be converted to None implicitly" in {
-        val s: String = null
-        val o: Option[String] = s
-        o should be (None)
+      "be converted to a null Map implicitly" in {
+        val tuple2: (String, String) = null
+        val map: Map[String, String] = tuple2
+        map should be (null)
       }
     }
 
     "not-null" should {
       "be converted to Some implicitly" in {
-        val s = ""
-        val o: Option[String] = s
-        o should be (Some(s))
+        val tuple2 = "Scala" -> "Modules"
+        val map: Map[String, String] = tuple2
+        map should have size (1)
+        map should contain key ("Scala")
+        map should contain value ("Modules")
       }
     }
   }

@@ -8,6 +8,7 @@
 package org.scalamodules.core
 
 import org.osgi.framework.{ BundleContext, ServiceRegistration }
+import scala.collection.Map
 
 private[scalamodules] class RichBundleContext(context: BundleContext) {
   require(context != null, "The BundleContext must not be null!")
@@ -17,7 +18,7 @@ private[scalamodules] class RichBundleContext(context: BundleContext) {
                     I2 >: S <: AnyRef,
                     I3 >: S <: AnyRef]
                    (service: S,
-                    properties: Option[Map[String, Any]] = None,
+                    properties: Map[String, Any] = Map.empty,
                     interface1: Option[Class[I1]] = None,
                     interface2: Option[Class[I2]] = None,
                     interface3: Option[Class[I3]] = None): ServiceRegistration = {
@@ -40,10 +41,8 @@ private[scalamodules] class RichBundleContext(context: BundleContext) {
       if (!interfaces.isEmpty) interfaces.toArray else allInterfacesOrClass
     }
 
-    properties match {
-      case None    => context.registerService(interfaces, service, null)
-      case Some(p) => context.registerService(interfaces, service, p)
-    }
+    if (properties.isEmpty) context.registerService(interfaces, service, null)
+    else context.registerService(interfaces, service, properties)
   }
 
   def findService[I <: AnyRef](interface: Class[I]): ServiceFinder[I] = {
