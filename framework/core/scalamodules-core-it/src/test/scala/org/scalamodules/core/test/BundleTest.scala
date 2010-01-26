@@ -25,9 +25,7 @@ class BundleTest extends ShouldMatchers {
   @org.junit.Test
   def test() {
     context findService withInterface[ServiceInterface] andApply { s => s } should be (None)
-
     context createService (ServiceImplementation(Service1), "name" -> "service1")
-    
     context findService withInterface[ServiceInterface] andApply { _.name } should be (Some(Service1))
   }
 
