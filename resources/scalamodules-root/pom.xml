@@ -89,8 +89,8 @@ Root POM for ScalaModules
     <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
 
     <!-- Specific settings for ScalaModules -->
-    <scala.version>2.8.0.Beta1-RC8</scala.version>
-    <scalatest.version>1.0.1-for-scala-2.8.0.Beta1-RC8-SNAPSHOT</scalatest.version>
+    <scala.version>2.8.0.Beta1</scala.version>
+    <scalatest.version>1.0.1-for-scala-2.8.0.Beta1-SNAPSHOT</scalatest.version>
     <osgi.version>4.2.0</osgi.version>
     <pax-exam.version>1.2.0</pax-exam.version>
   </properties>
@@ -380,21 +380,23 @@ Root POM for ScalaModules
   </distributionManagement>
   <repositories>
     <repository>
-      <id>scala-tools.org</id>
+      <id>scala-tools.releases</id>
+      <name>Scala-Tools Dependencies Repository for Releases</name>
       <url>http://scala-tools.org/repo-releases</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
     </repository>
     <repository>
-      <id>scala-tools.org.snapshots</id>
+      <id>scala-tools.snapshots</id>
+      <name>Scala-Tools Dependencies Repository for Snapshots</name>
       <url>http://scala-tools.org/repo-snapshots</url>
       <releases>
         <enabled>false</enabled>
       </releases>
     </repository>
     <repository>
-      <id>opsj4</id>
+      <id>opsj4.releases</id>
       <url>http://repository.ops4j.org/maven2</url>
       <snapshots>
         <enabled>false</enabled>
