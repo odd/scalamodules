@@ -8,7 +8,6 @@
 package org.scalamodules.core
 
 import org.osgi.framework.{ BundleContext, ServiceRegistration }
-import scala.collection.Map
 
 private[scalamodules] class RichBundleContext(context: BundleContext) {
   require(context != null, "The BundleContext must not be null!")
@@ -18,7 +17,7 @@ private[scalamodules] class RichBundleContext(context: BundleContext) {
                     I2 >: S <: AnyRef,
                     I3 >: S <: AnyRef]
                    (service: S,
-                    properties: Map[String, Any] = Map.empty,
+                    properties: Properties = Map.empty,
                     interface1: Option[Class[I1]] = None,
                     interface2: Option[Class[I2]] = None,
                     interface3: Option[Class[I3]] = None): ServiceRegistration = {

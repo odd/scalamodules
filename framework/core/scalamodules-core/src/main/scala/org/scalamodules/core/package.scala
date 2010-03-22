@@ -10,7 +10,7 @@ package org.scalamodules
 import java.util.Dictionary
 import org.osgi.framework.{ BundleContext, ServiceReference}
 import scala.collection.Map
-import scala.collection.JavaConversions.asEnumeration
+import scala.collection.JavaConversions._
 
 /**
  * Some implicit conversions and other stuff essential for the ScalaModules DSL.
@@ -18,14 +18,19 @@ import scala.collection.JavaConversions.asEnumeration
 package object core {
 
   /**
-   * Implicitly converts a BundleContext to a RichBundleContext backed by the given Scala Map.
+   * Implicitly converts a BundleContext to a RichBundleContext.
    */
   implicit def toRichBundleContext(context: BundleContext) = new RichBundleContext(context)
 
   /**
-   * Implicitly converts a Tuple2 into a Map.
+   * Implicitly converts a ServiceReference to a RichServiceReference.
    */
-  implicit def tuple2ToMap[A, B](tuple2: (A, B)) = if (tuple2 == null) null else Map(tuple2)
+  implicit def toRichServiceReference(serviceReference: ServiceReference) = new RichServiceReference(serviceReference)
+
+  /**
+   * Implicitly converts a Pair into a Map.
+   */
+  implicit def pairToMap[A, B](pair: (A, B)) = if (pair == null) null else Map(pair)
 
   /**
    * Returns the given or inferred type wrapped in a Some.
@@ -36,6 +41,11 @@ package object core {
    * Returns the given or inferred type.
    */
   def withInterface[I](implicit manifest: Manifest[I]) = manifest.erasure.asInstanceOf[Class[I]]
+
+  /**
+   * Type for service properties.
+   */
+  private[scalamodules] type Properties = Map[String, Any]
 
   /**
    * Implicitly converts a Scala Map to a read-only Java Dictionary backed by the given Scala Map.
@@ -62,9 +72,9 @@ package object core {
   private[scalamodules] def invokeService[I, T](serviceReference: ServiceReference,
                                                 f: I => T)
                                                (context: BundleContext): Option[T] = {
-    require(context != null, "The BundleContext must not be null!")
     require(serviceReference != null, "The ServiceReference must not be null!")
     require(f != null, "The function to be applied to the service must not be null!")
+    require(context != null, "The BundleContext must not be null!")
     try {
       context getService serviceReference match {  // Might be null even if serviceReference is not null!
         case null    => None

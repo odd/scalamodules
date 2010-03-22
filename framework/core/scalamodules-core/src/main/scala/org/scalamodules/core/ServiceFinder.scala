@@ -11,7 +11,6 @@ import org.osgi.framework.BundleContext
 
 private[scalamodules] class ServiceFinder[I <: AnyRef](interface: Class[I])
                                                       (context: BundleContext) {
-
   require(interface != null, "The service interface must not be null!")
   require(context != null, "The BundleContext must not be null!")
 
@@ -23,5 +22,12 @@ private[scalamodules] class ServiceFinder[I <: AnyRef](interface: Class[I])
     }
   }
 
-  // TODO Add andApply for service plus properties!
+  def andApply[T](f: (I, Properties) => T): Option[T] = {
+    require(f != null, "The function to be applied to the service must not be null!")
+    context getServiceReference interface.getName match {
+      case null             => None
+      case serviceReference =>
+        invokeService(serviceReference, f(_: I, serviceReference.properties))(context)
+    }
+  }
 }

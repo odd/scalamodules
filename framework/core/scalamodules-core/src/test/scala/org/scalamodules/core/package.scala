@@ -27,7 +27,14 @@ class coreSpec extends WordSpec with ShouldMatchers with MockitoSugar {
     }
   }
 
-  "A Tuple2" when {
+  "A ServiceReference" should {
+    "be converted to a RichServiceReference implicitly" in {
+      val serviceReference = mock[ServiceReference]
+      val richServiceReference: RichServiceReference = serviceReference
+    }
+  }
+
+  "A Pair" when {
 
     "null" should {
       "be converted to a null Map implicitly" in {

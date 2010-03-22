@@ -37,7 +37,7 @@ class ServiceFinderSpec extends WordSpec with ShouldMatchers with MockitoSugar {
     "the given function to be applied to the service is null" should {
       "throw an IllegalArgumentException" in {
         evaluating {
-          new ServiceFinder(classOf[TestInterface1])(mock[BundleContext]) andApply null
+          new ServiceFinder(classOf[TestInterface1])(mock[BundleContext]) andApply (null: (TestInterface1 => Any))
         } should produce [IllegalArgumentException]
       }
     }

@@ -333,6 +333,10 @@ Root POM for ScalaModules
             </jvmArgs>
             <args>
               <arg>-target:jvm-1.5</arg>
+              <arg>-make:changed</arg>
+              <arg>-deprecation</arg>
+              <arg>-unchecked</arg>
+              <arg>-optimise</arg>
             </args>
           </configuration>
           <executions>

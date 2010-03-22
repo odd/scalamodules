@@ -8,11 +8,11 @@
 package org.scalamodules.core
 package test
 
+import java.lang.String
 import org.ops4j.pax.exam.Inject
 import org.ops4j.pax.exam.junit.MavenConfiguredJUnit4TestRunner
 import org.osgi.framework.BundleContext
 import org.scalatest.matchers.ShouldMatchers
-import java.lang.String
 
 @org.junit.runner.RunWith(classOf[MavenConfiguredJUnit4TestRunner])
 class BundleTest extends ShouldMatchers {
