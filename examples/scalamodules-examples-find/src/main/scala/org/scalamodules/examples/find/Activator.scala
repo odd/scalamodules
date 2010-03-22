@@ -14,7 +14,15 @@ import org.scalamodules.core._
 class Activator extends BundleActivator {
 
   override def start(context: BundleContext) {
+    // Find a service and call it
     context findService withInterface[Greeting] andApply { _.welcome } match {
+      case None          => println("No Greeting service available!")
+      case Some(welcome) => println(welcome)
+    }
+    // Find a service and call it also making use of its properties
+    context findService withInterface[Greeting] andApply {
+      (greeting, properties) => "%s: %s".format(properties get "style" getOrElse "UNKNOWN", greeting.welcome) }
+    match {
       case None          => println("No Greeting service available!")
       case Some(welcome) => println(welcome)
     }

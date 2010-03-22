@@ -25,7 +25,7 @@ class Activator extends BundleActivator {
       override def welcome = "Hey!"
       override def goodbye = "See you!"
     }
-    context createService (coolGreeting, "style" -> "cool", interface[Greeting])
+    context createService (coolGreeting, Style -> "cool", interface[Greeting])
 
     val politeGreeting = new Greeting with Serializable {
       override def welcome = "Welcome!"
@@ -34,8 +34,10 @@ class Activator extends BundleActivator {
     context createService (politeGreeting,
                            interface1 = interface[Greeting],
                            interface2 = interface[Serializable],
-                           properties = "style" -> "polite")
+                           properties = Style -> "polite")
   }
 
   override def stop(context: BundleContext) {}
+
+  private val Style = "style"
 }

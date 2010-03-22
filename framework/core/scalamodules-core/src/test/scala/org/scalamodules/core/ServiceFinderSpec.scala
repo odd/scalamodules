@@ -52,7 +52,7 @@ class ServiceFinderSpec extends WordSpec with ShouldMatchers with MockitoSugar {
     }
 
     "the given function to be applied to the service is not-null and there is a TestInterface1 service reference available but no service" should {
-      "result in the proper methods called on the BundleContext and return Some()" in {
+      "result in the proper methods called on the BundleContext and return None" in {
         val context = mock[BundleContext]
         val serviceReference = mock[ServiceReference]
         when(context.getServiceReference(classOf[TestInterface1].getName)).thenReturn(serviceReference)
@@ -75,7 +75,8 @@ class ServiceFinderSpec extends WordSpec with ShouldMatchers with MockitoSugar {
         when(service.name).thenReturn(yes)
         val serviceFinder = new ServiceFinder(classOf[TestInterface1])(context)
         serviceFinder andApply { _.name } should be (Some(yes))
-        verify(context).ungetService(serviceReference)
+        serviceFinder andApply { (service, _) => service.name } should be (Some(yes))
+        verify(context, times(2)).ungetService(serviceReference)
       }
     }
   }

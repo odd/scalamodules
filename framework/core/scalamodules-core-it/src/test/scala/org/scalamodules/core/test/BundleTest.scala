@@ -17,21 +17,22 @@ import org.scalatest.matchers.ShouldMatchers
 @org.junit.runner.RunWith(classOf[MavenConfiguredJUnit4TestRunner])
 class BundleTest extends ShouldMatchers {
 
-  val Service1 = "service1"
+  @org.junit.Test
+  def test() {
+    val Service1 = "service1"
+    val Name = "name"
+    context findService withInterface[ServiceInterface] andApply { s => s } should be (None)
+    context createService (ServiceImplementation(Service1), Name -> Service1)
+    context findService withInterface[ServiceInterface] andApply { _.name } should be (Some(Service1))
+    context findService withInterface[ServiceInterface] andApply { (_, properties) => properties(Name) } should be (Some(Service1))
+  }
 
   @Inject
   private var context: BundleContext = _
 
-  @org.junit.Test
-  def test() {
-    context findService withInterface[ServiceInterface] andApply { s => s } should be (None)
-    context createService (ServiceImplementation(Service1), "name" -> "service1")
-    context findService withInterface[ServiceInterface] andApply { _.name } should be (Some(Service1))
-  }
-
-  trait ServiceInterface {
+  private trait ServiceInterface {
     def name: String
   }
 
-  case class ServiceImplementation(name: String) extends ServiceInterface
+  private case class ServiceImplementation(name: String) extends ServiceInterface
 }
