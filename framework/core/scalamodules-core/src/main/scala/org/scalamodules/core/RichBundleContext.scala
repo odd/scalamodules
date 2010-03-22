@@ -49,6 +49,8 @@ private[scalamodules] class RichBundleContext(context: BundleContext) {
     new ServiceFinder(interface)(context)
   }
 
-  // TODO Add findServices (and ServicesFinder like ServiceFinder)!
-
+  def findServices[I <: AnyRef](interface: Class[I]): ServicesFinder[I] = {
+    require(interface != null, "The service interface must not be null!")
+    new ServicesFinder(interface)(context)
+  }
 }
