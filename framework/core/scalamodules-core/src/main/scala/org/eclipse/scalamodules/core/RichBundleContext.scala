@@ -5,7 +5,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package org.scalamodules.core
+package org.eclipse.scalamodules
+package core
 
 import org.osgi.framework.{ BundleContext, ServiceRegistration }
 

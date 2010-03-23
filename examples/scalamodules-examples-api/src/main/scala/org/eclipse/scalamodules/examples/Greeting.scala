@@ -5,7 +5,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package org.scalamodules.examples
+package org.eclipse.scalamodules
+package examples
 
 trait Greeting {
 
