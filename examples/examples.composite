@@ -1,5 +1,5 @@
-scan-bundle:mvn:org.scalamodules/scalamodules-scala-library/2.8.0.Beta1-RC8@update
-scan-bundle:mvn:org.scalamodules/scalamodules-core/2.0-SNAPSHOT@update
-scan-bundle:mvn:org.scalamodules/scalamodules-examples-api/2.0-SNAPSHOT@update
-scan-bundle:mvn:org.scalamodules/scalamodules-examples-register/2.0-SNAPSHOT@update
-scan-bundle:mvn:org.scalamodules/scalamodules-examples-find/2.0-SNAPSHOT@update
+scan-bundle:mvn:org.eclipse.scalamodules/scalamodules-scala-library/2.8.0.Beta1@update
+scan-bundle:mvn:org.eclipse.scalamodules/scalamodules-core/2.0-M1@update
+scan-bundle:mvn:org.eclipse.scalamodules/scalamodules-examples-api/2.0-M1@update
+scan-bundle:mvn:org.eclipse.scalamodules/scalamodules-examples-register/2.0-M1@update
+scan-bundle:mvn:org.eclipse.scalamodules/scalamodules-examples-find/2.0-M1@update
