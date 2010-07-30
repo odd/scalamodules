@@ -21,8 +21,8 @@ class ScalaModulesParentProject(info: ProjectInfo) extends ParentProject(info) {
     val paxExamVersion = "1.2.0"
 
     // Provided
-    val osgiCore = "org.osgi" % "org.osgi.core" % osgiVersion % "provided"
-    val osgiCompendium = "org.osgi" % "org.osgi.compendium" % osgiVersion % "provided"
+    val osgiCore = "org.osgi" % "org.osgi.core" % osgiVersion % "provided" withSources
+    val osgiCompendium = "org.osgi" % "org.osgi.compendium" % osgiVersion % "provided" withSources
 
     // Test
     val specs = "org.scala-tools.testing" %% "specs" % "1.6.5" % "test"
